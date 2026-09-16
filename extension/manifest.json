@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "AskPage",
+  "description": "Ask questions about the web page you are reading \u2014 answers cite the exact passages.",
+  "version": "2.0.0",
+  "permissions": [
+    "sidePanel",
+    "activeTab",
+    "scripting",
+    "tabs",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://localhost:8000/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_title": "Open AskPage"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

@@ -1,0 +1,1282 @@
+{
+ "pages": [
+  {
+   "url": "https://docs.python.org/3/library/venv.html",
+   "title": "venv — Creation of virtual environments — Python 3.14.7 documentation",
+   "genre": "technical reference",
+   "blocks": [
+    {
+     "type": "heading",
+     "text": "venv — Creation of virtual environments",
+     "level": 1
+    },
+    {
+     "type": "paragraph",
+     "text": "The venv module supports creating lightweight “virtual environments”, each with their own independent set of Python packages installed in their site directories. A virtual environment is created on top of an existing Python installation, known as the virtual environment’s “base” Python, and by default is isolated from the packages in the base environment, so that only those explicitly installed in the virtual environment are available. See Virtual Environments and site ’s virtual environments documentation for more information."
+    },
+    {
+     "type": "paragraph",
+     "text": "When used from within a virtual environment, common installation tools such as pip will install Python packages into a virtual environment without needing to be told to do so explicitly."
+    },
+    {
+     "type": "paragraph",
+     "text": "A virtual environment is (amongst other things):"
+    },
+    {
+     "type": "list",
+     "text": "• Used to contain a specific Python interpreter and software libraries and binaries which are needed to support a project (library or application). These are by default isolated from software in other virtual environments and Python interpreters and libraries installed in the operating system. • Contained in a directory, conventionally named .venv or venv in the project directory, or under a container directory for lots of virtual environments, such as ~/.virtualenvs . • Not checked into source control systems such as Git. • Considered as disposable – it should be simple to delete and recreate it from scratch. You don’t place any project code in the environment. • Not considered as movable or copyable – you just recreate the same environment in the target location."
+    },
+    {
+     "type": "paragraph",
+     "text": "See PEP 405 for more background on Python virtual environments."
+    },
+    {
+     "type": "paragraph",
+     "text": "Python Packaging User Guide: Creating and using virtual environments"
+    },
+    {
+     "type": "paragraph",
+     "text": "Availability : not Android, not iOS, not WASI."
+    },
+    {
+     "type": "paragraph",
+     "text": "This module is not supported on mobile platforms or WebAssembly platforms ."
+    },
+    {
+     "type": "heading",
+     "text": "Creating virtual environments",
+     "level": 2
+    },
+    {
+     "type": "paragraph",
+     "text": "Virtual environments are created by executing the venv module:"
+    },
+    {
+     "type": "code",
+     "text": "python -m venv /path/to/new/virtual/environment"
+    },
+    {
+     "type": "paragraph",
+     "text": "This creates the target directory (including parent directories as needed) and places a pyvenv.cfg file in it with a home key pointing to the Python installation from which the command was run. It also creates a bin (or Scripts on Windows) subdirectory containing a copy or symlink of the Python executable (as appropriate for the platform or arguments used at environment creation time). It also creates a lib/pythonX.Y/site-packages subdirectory (on Windows, this is Lib\\site-packages ). If an existing directory is specified, it will be re-used."
+    },
+    {
+     "type": "paragraph",
+     "text": "Changed in version 3.5: The use of venv is now recommended for creating virtual environments."
+    },
+    {
+     "type": "paragraph",
+     "text": "Deprecated since version 3.6, removed in version 3.8: pyvenv was the recommended tool for creating virtual environments for Python 3.3 and 3.4, and replaced in 3.5 by executing venv directly."
+    },
+    {
+     "type": "paragraph",
+     "text": "On Windows, invoke the venv command as follows:"
+    },
+    {
+     "type": "code",
+     "text": "PS> python -m venv C :\\ path \\ to \\ new \\ virtual \\ environment"
+    },
+    {
+     "type": "paragraph",
+     "text": "The command, if run with -h , will show the available options:"
+    },
+    {
+     "type": "code",
+     "text": "usage: venv [-h] [--system-site-packages] [--symlinks | --copies] [--clear] [--upgrade] [--without-pip] [--prompt PROMPT] [--upgrade-deps] [--without-scm-ignore-files] ENV_DIR [ENV_DIR ...] Creates virtual Python environments in one or more target directories. Once an environment has been created, you may wish to activate it, e.g. by sourcing an activate script in its bin directory."
+    },
+    {
+     "type": "list",
+     "text": "• A required argument specifying the directory to create the environment in."
+    },
+    {
+     "type": "list",
+     "text": "• Give the virtual environment access to the system site-packages directory."
+    },
+    {
+     "type": "list",
+     "text": "• Try to use symlinks rather than copies, when symlinks are not the default for the platform."
+    },
+    {
+     "type": "list",
+     "text": "• Try to use copies rather than symlinks, even when symlinks are the default for the platform."
+    },
+    {
+     "type": "list",
+     "text": "• Delete the contents of the environment directory if it already exists, before environment creation."
+    },
+    {
+     "type": "list",
+     "text": "• Upgrade the environment directory to use this version of Python, assuming Python has been upgraded in-place."
+    },
+    {
+     "type": "list",
+     "text": "• Skips installing or upgrading pip in the virtual environment (pip is bootstrapped by default)."
+    },
+    {
+     "type": "list",
+     "text": "• Provides an alternative prompt prefix for this environment."
+    },
+    {
+     "type": "list",
+     "text": "• Upgrade core dependencies (pip) to the latest version in PyPI."
+    },
+    {
+     "type": "list",
+     "text": "• Skips adding SCM ignore files to the environment directory (Git is supported by default)."
+    },
+    {
+     "type": "paragraph",
+     "text": "Changed in version 3.4: Installs pip by default, added the --without-pip and --copies options."
+    },
+    {
+     "type": "paragraph",
+     "text": "Changed in version 3.4: In earlier versions, if the target directory already existed, an error was raised, unless the --clear or --upgrade option was provided."
+    },
+    {
+     "type": "paragraph",
+     "text": "Changed in version 3.9: Add --upgrade-deps option to upgrade pip + setuptools to the latest on PyPI."
+    },
+    {
+     "type": "paragraph",
+     "text": "Changed in version 3.12: setuptools is no longer a core venv dependency."
+    },
+    {
+     "type": "paragraph",
+     "text": "Changed in version 3.13: Added the --without-scm-ignore-files option."
+    },
+    {
+     "type": "paragraph",
+     "text": "Changed in version 3.13: venv now creates a .gitignore file for Git by default."
+    },
+    {
+     "type": "paragraph",
+     "text": "While symlinks are supported on Windows, they are not recommended. Of particular note is that double-clicking python.exe in File Explorer will resolve the symlink eagerly and ignore the virtual environment."
+    },
+    {
+     "type": "paragraph",
+     "text": "On Microsoft Windows, it may be required to enable the Activate.ps1 script by setting the execution policy for the user. You can do this by issuing the following PowerShell command:"
+    },
+    {
+     "type": "code",
+     "text": "PS C :\\> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser"
+    },
+    {
+     "type": "paragraph",
+     "text": "See About Execution Policies for more information."
+    },
+    {
+     "type": "paragraph",
+     "text": "The created pyvenv.cfg file also includes the include-system-site-packages key, set to true if venv is run with the --system-site-packages option, false otherwise."
+    },
+    {
+     "type": "paragraph",
+     "text": "Unless the --without-pip option is given, ensurepip will be invoked to bootstrap pip into the virtual environment."
+    },
+    {
+     "type": "paragraph",
+     "text": "Multiple paths can be given to venv , in which case an identical virtual environment will be created, according to the given options, at each provided path."
+    },
+    {
+     "type": "heading",
+     "text": "How venvs work",
+     "level": 2
+    },
+    {
+     "type": "paragraph",
+     "text": "When a Python interpreter is running from a virtual environment, sys.prefix and sys.exec_prefix point to the directories of the virtual environment, whereas sys.base_prefix and sys.base_exec_prefix point to those of the base Python used to create the environment. It is sufficient to check sys.prefix != sys.base_prefix to determine if the current interpreter is running from a virtual environment."
+    },
+    {
+     "type": "paragraph",
+     "text": "A virtual environment may be “activated” using a script in its binary directory ( bin on POSIX; Scripts on Windows). This will prepend that directory to your PATH , so that running python will invoke the environment’s Python interpreter and you can run installed scripts without having to use their full path. The invocation of the activation script is platform-specific ( <venv> must be replaced by the path to the directory containing the virtual environment):"
+    },
+    {
+     "type": "table",
+     "text": "Platform | Shell | Command to activate virtual environment ; POSIX | bash/zsh | $ source <venv> /bin/activate ; fish | $ source <venv> /bin/activate.fish ; csh/tcsh | $ source <venv> /bin/activate.csh ; pwsh | $ <venv> /bin/Activate.ps1 ; Windows | cmd.exe | C:\\> <venv> \\Scripts\\activate.bat ; PowerShell | PS C:\\> <venv> \\Scripts\\Activate.ps1"
+    },
+    {
+     "type": "paragraph",
+     "text": "Added in version 3.4: fish and csh activation scripts."
+    },
+    {
+     "type": "paragraph",
+     "text": "Added in version 3.8: PowerShell activation scripts installed under POSIX for PowerShell Core support."
+    },
+    {
+     "type": "paragraph",
+     "text": "You don’t specifically need to activate a virtual environment, as you can just specify the full path to that environment’s Python interpreter when invoking Python. Furthermore, all scripts installed in the environment should be runnable without activating it."
+    },
+    {
+     "type": "paragraph",
+     "text": "In order to achieve this, scripts installed into virtual environments have a “shebang” line which points to the environment’s Python interpreter, #!/ <path-to-venv> /bin/python . This means that the script will run with that interpreter regardless of the value of PATH . On Windows, “shebang” line processing is supported if you have the Python install manager installed. Thus, double-clicking an installed script in a Windows Explorer window should run it with the correct interpreter without the environment needing to be activated or on the PATH ."
+    },
+    {
+     "type": "paragraph",
+     "text": "When a virtual environment has been activated, the VIRTUAL_ENV environment variable is set to the path of the environment. Since explicitly activating a virtual environment is not required to use it, VIRTUAL_ENV cannot be relied upon to determine whether a virtual environment is being used."
+    },
+    {
+     "type": "paragraph",
+     "text": "Because scripts installed in environments should not expect the environment to be activated, their shebang lines contain the absolute paths to their environment’s interpreters. Because of this, environments are inherently non-portable, in the general case. You should always have a simple means of recreating an environment (for example, if you have a requirements file requirements.txt , you can invoke pip install -r requirements.txt using the environment’s pip to install all of the packages needed by the environment). If for any reason you need to move the environment to a new location, you should recreate it at the desired location and delete the one at the old location. If you move an environment because you moved a parent directory of it, you should recreate the environment in its new location. Otherwise, software installed into the environment may not work as expected."
+    },
+    {
+     "type": "paragraph",
+     "text": "You can deactivate a virtual environment by typing deactivate in your shell. The exact mechanism is platform-specific and is an internal implementation detail (typically, a script or shell function will be used)."
+    },
+    {
+     "type": "heading",
+     "text": "API",
+     "level": 2
+    },
+    {
+     "type": "paragraph",
+     "text": "The high-level method described above makes use of a simple API which provides mechanisms for third-party virtual environment creators to customize environment creation according to their needs, the EnvBuilder class."
+    },
+    {
+     "type": "list",
+     "text": "• The EnvBuilder class accepts the following keyword arguments on instantiation: system_site_packages – a boolean value indicating that the system Python site-packages should be available to the environment (defaults to False ). clear – a boolean value which, if true, will delete the contents of any existing target directory, before creating the environment. symlinks – a boolean value indicating whether to attempt to symlink the Python binary rather than copying. upgrade – a boolean value which, if true, will upgrade an existing environment with the running Python - for use when that Python has been upgraded in-place (defaults to False ). with_pip – a boolean value which, if true, ensures pip is installed in the virtual environment. This uses ensurepip with the --default-pip option. prompt – a string to be used after virtual environment is activated (defaults to None which means directory name of the environment would be used). If the special string \".\" is provided, the basename of the current directory is used as the prompt. upgrade_deps – Update the base venv modules to the latest on PyPI scm_ignore_files – Create ignore files based for the specified source control managers (SCM) in the iterable. Support is defined by having a method named create_{scm}_ignore_file . The only value supported by default is \"git\" via create_git_ignore_file() . Changed in version 3.4: Added the with_pip parameter Changed in version 3.6: Added the prompt parameter Changed in version 3.9: Added the upgrade_deps parameter Changed in version 3.13: Added the scm_ignore_files parameter EnvBuilder may be used as a base class. create ( env_dir ) Create a virtual environment by specifying the target directory (absolute or relative to the current directory) which is to contain the virtual environment. The create method will either create the environment in the specified directory, or raise an appropriate exception. The create method of the EnvBuilder class illustrates the hooks available for subclass customization: def create ( self , env_dir ): \"\"\" Create a virtualized Python environment in a directory. env_dir is the target directory to create an environment in. \"\"\" env_dir = os . path . abspath ( env_dir ) context = self . ensure_directories ( env_dir ) self . create_configuration ( context ) self . setup_python ( context ) self . setup_scripts ( context ) self . post_setup ( context ) Each of the methods ensure_directories() , create_configuration() , setup_python() , setup_scripts() and post_setup() can be overridden. ensure_directories ( env_dir ) Creates the environment directory and all necessary subdirectories that don’t already exist, and returns a context object. This context object is just a holder for attributes (such as paths) for use by the other methods. If the EnvBuilder is created with the arg clear=True , contents of the environment directory will be cleared and then all necessary subdirectories will be recreated. The returned context object is a types.SimpleNamespace with the following attributes: env_dir - The location of the virtual environment. Used for __VENV_DIR__ in activation scripts (see install_scripts() ). env_name - The name of the virtual environment. Used for __VENV_NAME__ in activation scripts (see install_scripts() ). prompt - The prompt to be used by the activation scripts. Used for __VENV_PROMPT__ in activation scripts (see install_scripts() ). executable - The underlying Python executable used by the virtual environment. This takes into account the case where a virtual environment is created from another virtual environment. inc_path - The include path for the virtual environment. lib_path - The purelib path for the virtual environment. bin_path - The script path for the virtual environment. bin_name - The name of the script path relative to the virtual environment location. Used for __VENV_BIN_NAME__ in activation scripts (see install_scripts() ). env_exe - The name of the Python interpreter in the virtual environment. Used for __VENV_PYTHON__ in activation scripts (see install_scripts() ). env_exec_cmd - The name of the Python interpreter, taking into account filesystem redirections. This can be used to run Python in the virtual environment. Changed in version 3.11: The venv sysconfig installation scheme is used to construct the paths of the created directories. Changed in version 3.12: The attribute lib_path was added to the context, and the context object was documented. create_configuration ( context ) Creates the pyvenv.cfg configuration file in the environment. setup_python ( context ) Creates a copy or symlink to the Python executable in the environment. On POSIX systems, if a specific executable python3.x was used, symlinks to python and python3 will be created pointing to that executable, unless files with those names already exist. setup_scripts ( context ) Installs activation scripts appropriate to the platform into the virtual environment. upgrade_dependencies ( context ) Upgrades the core venv dependency packages (currently pip ) in the environment. This is done by shelling out to the pip executable in the environment. Added in version 3.9. Changed in version 3.12: setuptools is no longer a core venv dependency. post_setup ( context ) A placeholder method which can be overridden in third party implementations to pre-install packages in the virtual environment or perform other post-creation steps. install_scripts ( context , path ) This method can be called from setup_scripts() or post_setup() in subclasses to assist in installing custom scripts into the virtual environment. path is the path to a directory that should contain subdirectories common , posix , nt ; each containing scripts destined for the bin directory in the environment. The contents of common and the directory corresponding to os.name are copied after some text replacement of placeholders: __VENV_DIR__ is replaced with the absolute path of the environment directory. __VENV_NAME__ is replaced with the environment name (final path segment of environment directory). __VENV_PROMPT__ is replaced with the prompt (the environment name surrounded by parentheses and with a following space) __VENV_BIN_NAME__ is replaced with the name of the bin directory (either bin or Scripts ). __VENV_PYTHON__ is replaced with the absolute path of the environment’s executable. The directories are allowed to exist (for when an existing environment is being upgraded). create_git_ignore_file ( context ) Creates a .gitignore file within the virtual environment that causes the entire directory to be ignored by the Git source control manager. Added in version 3.13. Changed in version 3.7.2: Windows now uses redirector scripts for python[w].exe instead of copying the actual binaries. In 3.7.2 only setup_python() does nothing unless running from a build in the source tree. Changed in version 3.7.3: Windows copies the redirector scripts as part of setup_python() instead of setup_scripts() . This was not the case in 3.7.2. When using symlinks, the original executables will be linked."
+    },
+    {
+     "type": "paragraph",
+     "text": "There is also a module-level convenience function:"
+    },
+    {
+     "type": "list",
+     "text": "• Create an EnvBuilder with the given keyword arguments, and call its create() method with the env_dir argument. Added in version 3.3. Changed in version 3.4: Added the with_pip parameter Changed in version 3.6: Added the prompt parameter Changed in version 3.9: Added the upgrade_deps parameter Changed in version 3.13: Added the scm_ignore_files parameter"
+    },
+    {
+     "type": "heading",
+     "text": "An example of extending EnvBuilder",
+     "level": 2
+    },
+    {
+     "type": "paragraph",
+     "text": "The following script shows how to extend EnvBuilder by implementing a subclass which installs setuptools and pip into a created virtual environment:"
+    },
+    {
+     "type": "code",
+     "text": "import os import os.path from subprocess import Popen , PIPE import sys from threading import Thread from urllib.parse import urlsplit from urllib.request import urlretrieve import venv class ExtendedEnvBuilder ( venv . EnvBuilder ): \"\"\" This builder installs setuptools and pip so that you can pip or easy_install other packages into the created virtual environment. :param nodist: If true, setuptools and pip are not installed into the created virtual environment. :param nopip: If true, pip is not installed into the created virtual environment. :param progress: If setuptools or pip are installed, the progress of the installation can be monitored by passing a progress callable. If specified, it is called with two arguments: a string indicating some progress, and a context indicating where the string is coming from. The context argument can have one of three values: 'main', indicating that it is called from virtualize() itself, and 'stdout' and 'stderr', which are obtained by reading lines from the output streams of a subprocess which is used to install the app. If a callable is not specified, default progress information is output to sys.stderr. \"\"\" def __init__ ( self , * args , ** kwargs ): self . nodist = kwargs . pop ( 'nodist' , False ) self . nopip = kwargs . pop ( 'nopip' , False ) self . progress = kwargs . pop ( 'progress' , None ) self . verbose = kwargs . pop ( 'verbose' , False ) super () . __init__ ( * args , ** kwargs ) def post_setup ( self , context ): \"\"\" Set up any packages which need to be pre-installed into the virtual environment being created. :param context: The information for the virtual environment creation request being processed. \"\"\" os . environ [ 'VIRTUAL_ENV' ] = context . env_dir if not self . nodist : self . install_setuptools ( context ) # Can't install pip without setuptools if not self . nopip and not self . nodist : self . install_pip ( context ) def reader ( self , stream , context ): \"\"\" Read lines from a subprocess' output stream and either pass to a progress callable (if specified) or write progress information to sys.stderr. \"\"\" progress = self . progress while True : s = stream . readline () if not s : break if progress is not None : progress ( s , context ) else : if not self . verbose : sys . stderr . write ( '.' ) else : sys . stderr . write ( s . decode ( 'utf-8' )) sys . stderr . flush () stream . close () def install_script ( self , context , name , url ): _ , _ , path , _ , _ = urlsplit ( url ) fn = os . path . split ( path )[ - 1 ] binpath = context . bin_path distpath = os . path . join ( binpath , fn ) # Download script into the virtual environment's binaries folder urlretrieve ( url , distpath ) progress = self . progress if self . verbose : term = ' \\n ' else : term = '' if progress is not None : progress ( 'Installing %s ... %s ' % ( name , term ), 'main' ) else : sys . stderr . write ( 'Installing %s ... %s ' % ( name , term )) sys . stderr . flush () # Install in the virtual environment args = [ context . env_exe , fn ] p = Popen ( args , stdout = PIPE , stderr = PIPE , cwd = binpath ) t1 = Thread ( target = self . reader , args = ( p . stdout , 'stdout' )) t1 . start () t2 = Thread ( target = self . reader , args = ( p . stderr , 'stderr' )) t2 . start () p . wait () t1 . join () t2 . join () if progress is not None : progress ( 'done.' , 'main' ) else : sys . stderr . write ( 'done. \\n ' ) # Clean up - no longer needed os . unlink ( distpath ) def install_setuptools ( self , context ): \"\"\" Install setuptools in the virtual environment. :param context: The information for the virtual environment creation request being processed. \"\"\" url = \"https://bootstrap.pypa.io/ez_setup.py\" self . install_script ( context , 'setuptools' , url ) # clear up the setuptools archive which gets downloaded pred = lambda o : o . startswith ( 'setuptools-' ) and o . endswith ( '.tar.gz' ) files = filter ( pred , os . listdir ( context . bin_path )) for f in files : f = os . path . join ( context . bin_path , f ) os . unlink ( f ) def install_pip ( self , context ): \"\"\" Install pip in the virtual environment. :param context: The information for the virtual environment creation request being processed. \"\"\" url = 'https://bootstrap.pypa.io/get-pip.py' self . install_script ( context , 'pip' , url ) def main ( args = None ): import argparse parser = argparse . ArgumentParser ( prog = __name__ , description = 'Creates virtual Python ' 'environments in one or ' 'more target ' 'directories.' ) parser . add_argument ( 'dirs' , metavar = 'ENV_DIR' , nargs = '+' , help = 'A directory in which to create the ' 'virtual environment.' ) parser . add_argument ( '--no-setuptools' , default = False , action = 'store_true' , dest = 'nodist' , help = \"Don't install setuptools or pip in the \" \"virtual environment.\" ) parser . add_argument ( '--no-pip' , default = False , action = 'store_true' , dest = 'nopip' , help = \"Don't install pip in the virtual \" \"environment.\" ) parser . add_argument ( '--system-site-packages' , default = False , action = 'store_true' , dest = 'system_site' , help = 'Give the virtual environment access to the ' 'system site-packages dir.' ) if os . name == 'nt' : use_symlinks = False else : use_symlinks = True parser . add_argument ( '--symlinks' , default = use_symlinks , action = 'store_true' , dest = 'symlinks' , help = 'Try to use symlinks rather than copies, ' 'when symlinks are not the default for ' 'the platform.' ) parser . add_argument ( '--clear' , default = False , action = 'store_true' , dest = 'clear' , help = 'Delete the contents of the ' 'virtual environment ' 'directory if it already ' 'exists, before virtual ' 'environment creation.' ) parser . add_argument ( '--upgrade' , default = False , action = 'store_true' , dest = 'upgrade' , help = 'Upgrade the virtual ' 'environment directory to ' 'use this version of ' 'Python, assuming Python ' 'has been upgraded ' 'in-place.' ) parser . add_argument ( '--verbose' , default = False , action = 'store_true' , dest = 'verbose' , help = 'Display the output ' 'from the scripts which ' 'install setuptools and pip.' ) options = parser . parse_args ( args ) if options . upgrade and options . clear : raise ValueError ( 'you cannot supply --upgrade and --clear together.' ) builder = ExtendedEnvBuilder ( system_site_packages = options . system_site , clear = options . clear , symlinks = options . symlinks , upgrade = options . upgrade , nodist = options . nodist , nopip = options . nopip , verbose = options . verbose ) for d in options . dirs : builder . create ( d ) if __name__ == '__main__' : rc = 1 try : main () rc = 0 except Exception as e : print ( 'Error: %s ' % e , file = sys . stderr ) sys . exit ( rc )"
+    },
+    {
+     "type": "paragraph",
+     "text": "This script is also available for download online ."
+    }
+   ],
+   "questions": [
+    {
+     "question": "What file does venv put in the target directory, and what key does it contain?",
+     "expected_answer": "a pyvenv.cfg file with a home key",
+     "evidence": "places a pyvenv.cfg file in it with a home key"
+    },
+    {
+     "question": "Which option gives the virtual environment access to the system site-packages directory?",
+     "expected_answer": "--system-site-packages",
+     "evidence": "Give the virtual environment access to the system site-packages"
+    },
+    {
+     "question": "How can I tell from inside Python whether I am running in a virtual environment?",
+     "expected_answer": "check that sys.prefix is not equal to sys.base_prefix",
+     "evidence": "sufficient to check"
+    },
+    {
+     "question": "What command activates a venv in the fish shell?",
+     "expected_answer": "source the activate.fish script in the environment's bin directory",
+     "evidence": "activate.fish"
+    },
+    {
+     "question": "Which flag skips installing pip into the new environment?",
+     "expected_answer": "--without-pip",
+     "evidence": "Skips installing or upgrading pip"
+    },
+    {
+     "question": "Why are virtual environments not portable between locations?",
+     "expected_answer": "installed scripts have shebang lines containing absolute paths to the environment's interpreter",
+     "evidence": "shebang lines contain the absolute paths"
+    },
+    {
+     "question": "What does the --prompt option do?",
+     "expected_answer": "provides an alternative prompt prefix for the environment",
+     "evidence": "alternative prompt prefix"
+    },
+    {
+     "question": "Which environment variable is set when a virtual environment is activated?",
+     "expected_answer": "VIRTUAL_ENV",
+     "evidence": "environment variable is set to the path"
+    },
+    {
+     "question": "How do I create a conda environment with a specific Python version?",
+     "expected_answer": null,
+     "evidence": null
+    },
+    {
+     "question": "How much memory does a virtual environment typically use at runtime?",
+     "expected_answer": null,
+     "evidence": null
+    }
+   ]
+  },
+  {
+   "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch",
+   "title": "Using the Fetch API - Web APIs | MDN",
+   "genre": "developer tutorial",
+   "blocks": [
+    {
+     "type": "heading",
+     "text": "Making a request",
+     "level": 2
+    },
+    {
+     "type": "paragraph",
+     "text": "To make a request, call fetch() , passing in:"
+    },
+    {
+     "type": "list",
+     "text": "• a definition of the resource to fetch. This can be any one of: a string containing the URL an object, such as an instance of URL , which has a stringifier that produces a string containing the URL a Request instance • optionally, an object containing options to configure the request."
+    },
+    {
+     "type": "paragraph",
+     "text": "In this section we'll look at some of the most commonly-used options. To read about all the options that can be given, see the fetch() reference page."
+    },
+    {
+     "type": "heading",
+     "text": "Setting the method",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "By default, fetch() makes a GET request, but you can use the method option to use a different request method :"
+    },
+    {
+     "type": "code",
+     "text": "const response = await fetch(\"https://example.org/post\", { method: \"POST\", // … });"
+    },
+    {
+     "type": "paragraph",
+     "text": "If the mode option is set to no-cors , then method must be one of GET , POST or HEAD ."
+    },
+    {
+     "type": "heading",
+     "text": "Setting a body",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "The request body is the payload of the request: it's the thing the client is sending to the server. You cannot include a body with GET requests, but it's useful for requests that send content to the server, such as POST or PUT requests. For example, if you want to upload a file to the server, you might make a POST request and include the file as the request body."
+    },
+    {
+     "type": "paragraph",
+     "text": "To set a request body, pass it as the body option:"
+    },
+    {
+     "type": "code",
+     "text": "const response = await fetch(\"https://example.org/post\", { method: \"POST\", body: JSON.stringify({ username: \"example\" }), // … });"
+    },
+    {
+     "type": "paragraph",
+     "text": "You can supply the body as an instance of any of the following types:"
+    },
+    {
+     "type": "list",
+     "text": "• a string • ArrayBuffer • TypedArray • DataView • Blob • File • URLSearchParams • FormData • ReadableStream"
+    },
+    {
+     "type": "paragraph",
+     "text": "Other objects are converted to strings using their toString() method. For example, you can use a URLSearchParams object to encode form data (see setting headers for more information):"
+    },
+    {
+     "type": "code",
+     "text": "const response = await fetch(\"https://example.org/post\", { method: \"POST\", headers: { \"Content-Type\": \"application/x-www-form-urlencoded\", }, // Automatically converted to \"username=example&password=password\" body: new URLSearchParams({ username: \"example\", password: \"password\" }), // … });"
+    },
+    {
+     "type": "paragraph",
+     "text": "Note that just like response bodies, request bodies are streams, and making the request reads the stream, so if a request contains a body, you can't make it twice:"
+    },
+    {
+     "type": "code",
+     "text": "const request = new Request(\"https://example.org/post\", { method: \"POST\", body: JSON.stringify({ username: \"example\" }), }); const response1 = await fetch(request); console.log(response1.status); // Will throw: \"Body has already been consumed.\" const response2 = await fetch(request); console.log(response2.status);"
+    },
+    {
+     "type": "paragraph",
+     "text": "Instead, you would need to create a clone of the request before sending it:"
+    },
+    {
+     "type": "code",
+     "text": "const request1 = new Request(\"https://example.org/post\", { method: \"POST\", body: JSON.stringify({ username: \"example\" }), }); const request2 = request1.clone(); const response1 = await fetch(request1); console.log(response1.status); const response2 = await fetch(request2); console.log(response2.status);"
+    },
+    {
+     "type": "paragraph",
+     "text": "See Locked and disturbed streams for more information."
+    },
+    {
+     "type": "paragraph",
+     "text": "Request headers give the server information about the request: for example, in a POST request, the Content-Type header tells the server the format of the request's body."
+    },
+    {
+     "type": "paragraph",
+     "text": "To set request headers, assign them to the headers option."
+    },
+    {
+     "type": "paragraph",
+     "text": "You can pass an object literal here containing header-name: header-value properties:"
+    },
+    {
+     "type": "code",
+     "text": "const response = await fetch(\"https://example.org/post\", { method: \"POST\", headers: { \"Content-Type\": \"application/json\", }, body: JSON.stringify({ username: \"example\" }), // … });"
+    },
+    {
+     "type": "paragraph",
+     "text": "Alternatively, you can construct a Headers object, add headers to that object using Headers.append() , then assign the Headers object to the headers option:"
+    },
+    {
+     "type": "code",
+     "text": "const myHeaders = new Headers(); myHeaders.append(\"Content-Type\", \"application/json\"); const response = await fetch(\"https://example.org/post\", { method: \"POST\", headers: myHeaders, body: JSON.stringify({ username: \"example\" }), // … });"
+    },
+    {
+     "type": "paragraph",
+     "text": "Compared to using plain objects, the Headers object provides some additional input sanitization. For example, it normalizes header names to lowercase, strips leading and trailing whitespace from header values, and prevents certain headers from being set. Many headers are set automatically by the browser and can't be set by a script: these are called Forbidden request headers . If the mode option is set to no-cors , then the set of permitted headers is further restricted."
+    },
+    {
+     "type": "heading",
+     "text": "Sending data in a GET request",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "GET requests don't have a body, but you can still send data to the server by appending it to the URL as a query string. This is a common way to send form data to the server. You can do this by using URLSearchParams to encode the data, and then appending it to the URL:"
+    },
+    {
+     "type": "code",
+     "text": "const params = new URLSearchParams(); params.append(\"username\", \"example\"); // GET request sent to https://example.org/login?username=example const response = await fetch(`https://example.org/login?${params}`);"
+    },
+    {
+     "type": "heading",
+     "text": "Making cross-origin requests",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "Whether a request can be made cross-origin or not is determined by the value of the RequestInit.mode option. This may take one of three values: cors , same-origin , or no-cors ."
+    },
+    {
+     "type": "list",
+     "text": "• For fetch requests the default value of mode is cors , meaning that if the request is cross-origin then it will use the Cross-Origin Resource Sharing (CORS) mechanism. This means that: if the request is a simple request , then the request will always be sent, but the server must respond with the correct Access-Control-Allow-Origin header or the browser will not share the response with the caller. if the request is not a simple request, then the browser will send a preflighted request to check that the server understands CORS and allows the request, and the real request will not be sent unless the server responds to the preflighted request with the appropriate CORS headers. • Setting mode to same-origin disallows cross-origin requests completely. • Setting mode to no-cors disables CORS for cross-origin requests. This restricts the headers that may be set, and restricts methods to GET, HEAD, and POST. The response is opaque , meaning that its headers and body are not available to JavaScript. Most of the time a website should not use no-cors : the main application of it is for certain service worker use cases."
+    },
+    {
+     "type": "paragraph",
+     "text": "See the reference documentation for RequestInit.mode for more details."
+    },
+    {
+     "type": "heading",
+     "text": "Including credentials",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "In the context of the Fetch API, a credential is an extra piece of data sent along with the request that the server may use to authenticate the user. All the following items are considered to be credentials:"
+    },
+    {
+     "type": "list",
+     "text": "• HTTP cookies • TLS client certificates • The Authorization and Proxy-Authorization headers."
+    },
+    {
+     "type": "paragraph",
+     "text": "By default, credentials are only included in same-origin requests. To customize this behavior, as well as to control whether the browser respects any Set-Cookie response headers, set the credentials option, which can take one of the following three values:"
+    },
+    {
+     "type": "list",
+     "text": "• omit : never send credentials in the request or include credentials in the response. • same-origin (the default): only send and include credentials for same-origin requests. • include : always include credentials, even cross-origin."
+    },
+    {
+     "type": "paragraph",
+     "text": "Note that if a cookie's SameSite attribute is set to Strict or Lax , then the cookie will not be sent cross-site, even if credentials is set to include ."
+    },
+    {
+     "type": "paragraph",
+     "text": "Including credentials in cross-origin requests can make a site vulnerable to CSRF attacks, so even if credentials is set to include , the server must also agree to their inclusion by including the Access-Control-Allow-Credentials header in its response. Additionally, in this situation the server must explicitly specify the client's origin in the Access-Control-Allow-Origin response header (that is, * is not allowed)."
+    },
+    {
+     "type": "paragraph",
+     "text": "This means that if credentials is set to include and the request is cross-origin, then:"
+    },
+    {
+     "type": "list",
+     "text": "• If the request is a simple request , then the request will be sent with credentials, but the server must set the Access-Control-Allow-Credentials and Access-Control-Allow-Origin response headers, or the browser will return a network error to the caller. If the server does set the correct headers, then the response, including credentials, will be delivered to the caller. • If the request is not a simple request, then the browser will send a preflighted request without credentials, and the server must set the Access-Control-Allow-Credentials and Access-Control-Allow-Origin response headers, or the browser will return a network error to the caller. If the server does set the correct headers, then the browser will follow up with the real request, including credentials, and will deliver the real response, including credentials, to the caller."
+    },
+    {
+     "type": "heading",
+     "text": "Creating a Request object",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "The Request() constructor takes the same arguments as fetch() itself. This means that instead of passing options into fetch() , you can pass the same options to the Request() constructor, and then pass that object to fetch() ."
+    },
+    {
+     "type": "paragraph",
+     "text": "For example, we can make a POST request by passing options into fetch() using code like this:"
+    },
+    {
+     "type": "code",
+     "text": "const myHeaders = new Headers(); myHeaders.append(\"Content-Type\", \"application/json\"); const response = await fetch(\"https://example.org/post\", { method: \"POST\", body: JSON.stringify({ username: \"example\" }), headers: myHeaders, });"
+    },
+    {
+     "type": "paragraph",
+     "text": "However, we could rewrite this to pass the same arguments to the Request() constructor:"
+    },
+    {
+     "type": "code",
+     "text": "const myHeaders = new Headers(); myHeaders.append(\"Content-Type\", \"application/json\"); const myRequest = new Request(\"https://example.org/post\", { method: \"POST\", body: JSON.stringify({ username: \"example\" }), headers: myHeaders, }); const response = await fetch(myRequest);"
+    },
+    {
+     "type": "paragraph",
+     "text": "This also means that you can create a request from another request, while changing some of its properties using the second argument:"
+    },
+    {
+     "type": "code",
+     "text": "async function post(request) { try { const response = await fetch(request); const result = await response.json(); console.log(\"Success:\", result); } catch (error) { console.error(\"Error:\", error); } } const request1 = new Request(\"https://example.org/post\", { method: \"POST\", headers: { \"Content-Type\": \"application/json\", }, body: JSON.stringify({ username: \"example1\" }), }); const request2 = new Request(request1, { body: JSON.stringify({ username: \"example2\" }), }); post(request1); post(request2);"
+    },
+    {
+     "type": "heading",
+     "text": "Canceling a request",
+     "level": 2
+    },
+    {
+     "type": "paragraph",
+     "text": "To make a request cancelable, create an AbortController , and assign its AbortSignal to the request's signal property."
+    },
+    {
+     "type": "paragraph",
+     "text": "To cancel the request, call the controller's abort() method. The fetch() call will reject the promise with an AbortError exception."
+    },
+    {
+     "type": "code",
+     "text": "const controller = new AbortController(); const fetchButton = document.querySelector(\"#fetch\"); fetchButton.addEventListener(\"click\", async () => { try { console.log(\"Starting fetch\"); const response = await fetch(\"https://example.org/get\", { signal: controller.signal, }); console.log(`Response: ${response.status}`); } catch (e) { console.error(`Error: ${e}`); } }); const cancelButton = document.querySelector(\"#cancel\"); cancelButton.addEventListener(\"click\", () => { controller.abort(); console.log(\"Canceled fetch\"); });"
+    },
+    {
+     "type": "paragraph",
+     "text": "If the request is aborted after the fetch() call has been fulfilled but before the response body has been read, then attempting to read the response body will reject with an AbortError exception."
+    },
+    {
+     "type": "code",
+     "text": "async function get() { const controller = new AbortController(); const request = new Request(\"https://example.org/get\", { signal: controller.signal, }); const response = await fetch(request); controller.abort(); // The next line will throw `AbortError` const text = await response.text(); console.log(text); }"
+    },
+    {
+     "type": "heading",
+     "text": "Handling the response",
+     "level": 2
+    },
+    {
+     "type": "paragraph",
+     "text": "As soon as the browser has received the response status and headers from the server (and potentially before the response body itself has been received), the promise returned by fetch() is fulfilled with a Response object."
+    },
+    {
+     "type": "heading",
+     "text": "Checking response status",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "The promise returned by fetch() will reject on some errors, such as a network error or a bad scheme. However, if the server responds with an error like 404 , then fetch() fulfills with a Response , so we have to check the status before we can read the response body."
+    },
+    {
+     "type": "paragraph",
+     "text": "The Response.status property tells us the numerical status code, and the Response.ok property returns true if the status is in the 200 range ."
+    },
+    {
+     "type": "paragraph",
+     "text": "A common pattern is to check the value of ok and throw if it is false :"
+    },
+    {
+     "type": "code",
+     "text": "async function getData() { const url = \"https://example.org/products.json\"; try { const response = await fetch(url); if (!response.ok) { throw new Error(`Response status: ${response.status}`); } // … } catch (error) { console.error(error.message); } }"
+    },
+    {
+     "type": "heading",
+     "text": "Checking the response type",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "Responses have a type property that can be one of the following:"
+    },
+    {
+     "type": "list",
+     "text": "• basic : the request was a same-origin request. • cors : the request was a cross-origin CORS request. • opaque : the request was a cross-origin simple request made with the no-cors mode. • opaqueredirect : the request set the redirect option to manual , and the server returned a redirect status ."
+    },
+    {
+     "type": "paragraph",
+     "text": "The type determines the possible contents of the response, as follows:"
+    },
+    {
+     "type": "list",
+     "text": "• Basic responses exclude response headers from the Forbidden response header name list. • CORS responses include only response headers from the CORS-safelisted response header list. • Opaque responses and opaque redirect responses have a status of 0 , an empty header list, and a null body."
+    },
+    {
+     "type": "paragraph",
+     "text": "Just like the request, the response has a headers property which is a Headers object, and this contains any response headers that are exposed to scripts, subject to the exclusions made based on the response type."
+    },
+    {
+     "type": "paragraph",
+     "text": "A common use case for this is to check the content type before trying to read the body:"
+    },
+    {
+     "type": "code",
+     "text": "async function fetchJSON(request) { try { const response = await fetch(request); const contentType = response.headers.get(\"content-type\"); if (!contentType || !contentType.includes(\"application/json\")) { throw new TypeError(\"Oops, we haven't got JSON!\"); } // Otherwise, we can read the body as JSON } catch (error) { console.error(\"Error:\", error); } }"
+    },
+    {
+     "type": "heading",
+     "text": "Reading the response body",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "The Response interface provides a number of methods to retrieve the entire body contents in a variety of different formats:"
+    },
+    {
+     "type": "list",
+     "text": "• Response.arrayBuffer() • Response.blob() • Response.formData() • Response.json() • Response.text()"
+    },
+    {
+     "type": "paragraph",
+     "text": "These are all asynchronous methods, returning a Promise which will be fulfilled with the body content."
+    },
+    {
+     "type": "paragraph",
+     "text": "In this example, we fetch an image and read it as a Blob , which we can then use to create an object URL:"
+    },
+    {
+     "type": "code",
+     "text": "const image = document.querySelector(\"img\"); const url = \"flowers.jpg\"; async function setImage() { try { const response = await fetch(url); if (!response.ok) { throw new Error(`Response status: ${response.status}`); } const blob = await response.blob(); const objectURL = URL.createObjectURL(blob); image.src = objectURL; } catch (e) { console.error(e); } }"
+    },
+    {
+     "type": "paragraph",
+     "text": "The method will throw an exception if the response body is not in the appropriate format: for example, if you call json() on a response that can't be parsed as JSON."
+    },
+    {
+     "type": "heading",
+     "text": "Streaming the response body",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "Request and response bodies are actually ReadableStream objects, and whenever you read them, you're streaming the content. This is good for memory efficiency, because the browser doesn't have to buffer the entire response in memory before the caller retrieves it using a method like json() ."
+    },
+    {
+     "type": "paragraph",
+     "text": "This also means that the caller can process the content incrementally as it is received."
+    },
+    {
+     "type": "paragraph",
+     "text": "For example, consider a GET request that fetches a large text file and processes it in some way, or displays it to the user:"
+    },
+    {
+     "type": "code",
+     "text": "const url = \"https://www.example.org/a-large-file.txt\"; async function fetchText(url) { try { const response = await fetch(url); if (!response.ok) { throw new Error(`Response status: ${response.status}`); } const text = await response.text(); console.log(text); } catch (e) { console.error(e); } }"
+    },
+    {
+     "type": "paragraph",
+     "text": "If we use Response.text() , as above, we must wait until the whole file has been received before we can process any of it."
+    },
+    {
+     "type": "paragraph",
+     "text": "If we stream the response instead, we can process chunks of the body as they are received from the network:"
+    },
+    {
+     "type": "code",
+     "text": "const url = \"https://www.example.org/a-large-file.txt\"; async function fetchTextAsStream(url) { try { const response = await fetch(url); if (!response.ok) { throw new Error(`Response status: ${response.status}`); } const stream = response.body.pipeThrough(new TextDecoderStream()); for await (const value of stream) { console.log(value); } } catch (e) { console.error(e); } }"
+    },
+    {
+     "type": "paragraph",
+     "text": "In this example, we iterate asynchronously over the stream, processing each chunk as it arrives."
+    },
+    {
+     "type": "paragraph",
+     "text": "Note that when you access the body directly like this, you get the raw bytes of the response and must transform it yourself. In this case we call ReadableStream.pipeThrough() to pipe the response through a TextDecoderStream , which decodes the UTF-8-encoded body data as text."
+    },
+    {
+     "type": "heading",
+     "text": "Processing a text file line by line",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "In the example below, we fetch a text resource and process it line by line, using a regular expression to look for line endings. For simplicity, we assume the text is UTF-8, and don't handle fetch errors:"
+    },
+    {
+     "type": "code",
+     "text": "async function* makeTextFileLineIterator(fileURL) { const response = await fetch(fileURL); const reader = response.body.pipeThrough(new TextDecoderStream()).getReader(); let { value: chunk = \"\", done: readerDone } = await reader.read(); const newline = /\\r?\\n/g; let startIndex = 0; while (true) { const result = newline.exec(chunk); if (!result) { if (readerDone) break; const remainder = chunk.slice(startIndex); ({ value: chunk, done: readerDone } = await reader.read()); chunk = remainder + (chunk || \"\"); startIndex = newline.lastIndex = 0; continue; } yield chunk.substring(startIndex, result.index); startIndex = newline.lastIndex; } if (startIndex < chunk.length) { // Last line didn't end in a newline char yield chunk.substring(startIndex); } } async function run(urlOfFile) { for await (const line of makeTextFileLineIterator(urlOfFile)) { processLine(line); } } function processLine(line) { console.log(line); } run(\"https://www.example.org/a-large-file.txt\");"
+    },
+    {
+     "type": "heading",
+     "text": "Locked and disturbed streams",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "The consequences of request and response bodies being streams are that:"
+    },
+    {
+     "type": "list",
+     "text": "• if a reader has been attached to a stream using ReadableStream.getReader() , then the stream is locked , and nothing else can read the stream. • if any content has been read from the stream, then the stream is disturbed , and nothing else can read from the stream."
+    },
+    {
+     "type": "paragraph",
+     "text": "This means it's not possible to read the same response (or request) body more than once:"
+    },
+    {
+     "type": "code",
+     "text": "async function getData() { const url = \"https://example.org/products.json\"; try { const response = await fetch(url); if (!response.ok) { throw new Error(`Response status: ${response.status}`); } const result1 = await response.json(); const result2 = await response.json(); // will throw } catch (error) { console.error(error.message); } }"
+    },
+    {
+     "type": "paragraph",
+     "text": "If you do need to read the body more than once, you must call Response.clone() before reading the body:"
+    },
+    {
+     "type": "code",
+     "text": "async function getData() { const url = \"https://example.org/products.json\"; try { const response1 = await fetch(url); if (!response1.ok) { throw new Error(`Response status: ${response1.status}`); } const response2 = response1.clone(); const result1 = await response1.json(); const result2 = await response2.json(); } catch (error) { console.error(error.message); } }"
+    },
+    {
+     "type": "paragraph",
+     "text": "This is a common pattern when implementing an offline cache with service workers . The service worker wants to return the response to the app, but also to cache the response. So it clones the response, returns the original, and caches the clone:"
+    },
+    {
+     "type": "code",
+     "text": "async function cacheFirst(request) { const cachedResponse = await caches.match(request); if (cachedResponse) { return cachedResponse; } try { const networkResponse = await fetch(request); if (networkResponse.ok) { const cache = await caches.open(\"MyCache_1\"); cache.put(request, networkResponse.clone()); } return networkResponse; } catch (error) { return Response.error(); } } self.addEventListener(\"fetch\", (event) => { if (precachedResources.includes(url.pathname)) { event.respondWith(cacheFirst(event.request)); } });"
+    },
+    {
+     "type": "heading",
+     "text": "See also",
+     "level": 2
+    },
+    {
+     "type": "list",
+     "text": "• Service Worker API • Streams API • CORS • HTTP • Fetch examples on GitHub"
+    }
+   ],
+   "questions": [
+    {
+     "question": "What does the Response.ok property return?",
+     "expected_answer": "true if the status is in the 200 range",
+     "evidence": "returns true if the status is in the 200 range"
+    },
+    {
+     "question": "Can I include a body with a GET request?",
+     "expected_answer": "no, you cannot include a body with GET requests",
+     "evidence": "cannot include a body with GET requests"
+    },
+    {
+     "question": "How do I cancel a fetch request that is in flight?",
+     "expected_answer": "create an AbortController and call its abort() method",
+     "evidence": "call the controller's abort() method"
+    },
+    {
+     "question": "What is the default value of the mode option for fetch requests?",
+     "expected_answer": "cors",
+     "evidence": "the default value of mode is cors"
+    },
+    {
+     "question": "What values can the credentials option take?",
+     "expected_answer": "omit, same-origin, and include",
+     "evidence": "never send credentials in the request"
+    },
+    {
+     "question": "What do I have to call if I need to read a response body more than once?",
+     "expected_answer": "Response.clone() before reading the body",
+     "evidence": "you must call Response.clone() before reading"
+    },
+    {
+     "question": "Does fetch reject its promise when the server returns a 404?",
+     "expected_answer": "no, it fulfills with a Response, so you must check the status",
+     "evidence": "then fetch() fulfills with a Response"
+    },
+    {
+     "question": "What does it mean for a stream to be disturbed?",
+     "expected_answer": "content has already been read from it, so nothing else can read it",
+     "evidence": "then the stream is disturbed"
+    },
+    {
+     "question": "How many concurrent fetch requests will Chrome allow per domain?",
+     "expected_answer": null,
+     "evidence": null
+    },
+    {
+     "question": "How do I configure request interceptors in axios?",
+     "expected_answer": null,
+     "evidence": null
+    }
+   ]
+  },
+  {
+   "url": "https://en.wikipedia.org/wiki/Calvin_cycle",
+   "title": "Calvin cycle - Wikipedia",
+   "genre": "science encyclopedia",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "The Calvin cycle , bio synthetic phase , dark reactions , or photosynthetic carbon reduction ( PCR ) cycle of photosynthesis is a series of chemical reactions that convert carbon dioxide and hydrogen-carrier compounds into glucose . The Calvin cycle is present in all photosynthetic eukaryotes and also many photosynthetic bacteria. In plants, these reactions occur in the stroma , the fluid-filled region of a chloroplast outside the thylakoid membranes . These reactions take the products ( ATP and NADPH ) of light-dependent reactions and perform further chemical processes on them. The Calvin cycle uses the chemical energy of ATP and the reducing power of NADPH from the light-dependent reactions to produce sugars for the plant to use. These substrates are used in a series of reduction-oxidation ( redox ) reactions to produce sugars in a step-wise process; there is no direct reaction that converts several molecules of CO 2 to a sugar. There are three phases to the light-independent reactions, collectively called the Calvin cycle: carboxylation , reduction reactions, and ribulose 1,5-bisphosphate (RuBP) regeneration."
+    },
+    {
+     "type": "paragraph",
+     "text": "Though it is also called the \"dark reaction\", the Calvin cycle does not occur in the dark or during nighttime. This is because the process requires NADPH , which is short-lived and comes from light-dependent reactions . In the dark, plants instead release sucrose into the phloem from their starch reserves to provide energy for the plant. The Calvin cycle thus happens when light is available independent of the kind of photosynthesis ( C3 carbon fixation , C4 carbon fixation , and crassulacean acid metabolism (CAM) ); CAM plants store malic acid in their vacuoles every night and release it by day to make this process work."
+    },
+    {
+     "type": "heading",
+     "text": "Coupling to other metabolic pathways",
+     "level": 2
+    },
+    {
+     "type": "paragraph",
+     "text": "The reactions of the Calvin cycle are closely coupled to the thylakoid electron transport chain , as the energy required to reduce the carbon dioxide is provided by NADPH produced during the light dependent reactions . The process of photorespiration , also known as C2 cycle, is also coupled to the Calvin cycle, as it results from an alternative reaction of the RuBisCO enzyme, and its final byproduct is another glyceraldehyde-3-P molecule."
+    },
+    {
+     "type": "heading",
+     "text": "Calvin cycle",
+     "level": 2
+    },
+    {
+     "type": "paragraph",
+     "text": "The Calvin cycle , Calvin–Benson–Bassham (CBB) cycle , reductive pentose phosphate cycle (RPP cycle) , or C3 cycle is a series of biochemical redox reactions that take place in the stroma of chloroplast in photosynthetic organisms . The cycle was discovered in 1950 by Melvin Calvin , James Bassham , and Andrew Benson at the University of California, Berkeley by using the radioactive isotope carbon-14 ."
+    },
+    {
+     "type": "paragraph",
+     "text": "Photosynthesis occurs in two stages in a cell. In the first stage, light-dependent reactions capture the energy of light and use it to make the energy-storage molecule ATP and the moderate-energy hydrogen carrier NADPH . The Calvin cycle uses these compounds to convert carbon dioxide and water into organic compounds that can be used by the organism (and by animals that feed on it). This set of reactions is also called carbon fixation . The key enzyme of the cycle is called RuBisCO . In the following biochemical equations, the chemical species (phosphates and carboxylic acids) exist in equilibria among their various ionized states as governed by the pH ."
+    },
+    {
+     "type": "paragraph",
+     "text": "The enzymes in the Calvin cycle are functionally equivalent to most enzymes used in other metabolic pathways such as gluconeogenesis and the pentose phosphate pathway , but the enzymes in the Calvin cycle are found in the chloroplast stroma instead of the cell cytosol , separating the reactions. They are activated in the light (which is why the name \"dark reaction\" is misleading), and also by products of the light-dependent reaction. These regulatory functions prevent the Calvin cycle from being respired to carbon dioxide. Energy (in the form of ATP) would be wasted in carrying out these reactions when they have no net productivity ."
+    },
+    {
+     "type": "paragraph",
+     "text": "The sum of reactions in the Calvin cycle is the following:"
+    },
+    {
+     "type": "list",
+     "text": "• 3 CO 2 + 6 NADPH + 9 ATP + 6 H → glyceraldehyde-3-phosphate (G3P) + 6 NADP + 9 ADP + 3 H 2 O + 8 P i (P i = inorganic phosphate )"
+    },
+    {
+     "type": "paragraph",
+     "text": "Hexose (six-carbon) sugars are not products of the Calvin cycle. Although many texts list a product of photosynthesis as C 6 H 12 O 6 , this is mainly for convenience to match the equation of aerobic respiration , where six-carbon sugars are oxidized in mitochondria. The carbohydrate products of the Calvin cycle are three-carbon sugar phosphate molecules, or \"triose phosphates\", namely, glyceraldehyde-3-phosphate (G3P)."
+    },
+    {
+     "type": "heading",
+     "text": "Steps",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "In the first stage of the Calvin cycle, a CO 2 molecule is incorporated into one of two three-carbon molecules ( glyceraldehyde 3-phosphate or G3P), where it uses up two molecules of ATP and two molecules of NADPH , which had been produced in the light-dependent stage. The three steps involved are:"
+    },
+    {
+     "type": "list",
+     "text": "• The enzyme RuBisCO catalyses the carboxylation of ribulose-1,5-bisphosphate (RuBP) a 5-carbon compound, by carbon dioxide (a total of 6 carbons) in a two-step reaction. The product of the first step is enediol-enzyme complex that can capture CO 2 or O 2 . Thus, enediol-enzyme complex is the real carboxylase/oxygenase. The CO 2 that is captured by enediol in second step produces an unstable six-carbon compound called 2-carboxy 3-keto 1,5-biphosphoribotol (CKABP ) (or 3-keto-2-carboxyarabinitol 1,5-bisphosphate) that immediately splits into 2 molecules of 3-phosphoglycerate (also written as 3-phosphoglyceric acid, PGA, 3PGA, or 3-PGA), a 3-carbon compound. • The enzyme phosphoglycerate kinase catalyses the phosphorylation of 3-PGA by ATP (which was produced in the light-dependent stage). 1,3-Bisphosphoglycerate (glycerate-1,3-bisphosphate) and ADP are the products. (However, note that two 3-PGAs are produced for every CO 2 that enters the cycle, so this step utilizes two ATP per CO 2 fixed.) • The enzyme glyceraldehyde 3-phosphate dehydrogenase catalyses the reduction of 1,3BPGA by NADPH (which is another product of the light-dependent stage). Glyceraldehyde 3-phosphate (also called G3P, GP, TP, PGAL, GAP) is produced, and the NADPH itself is oxidized and becomes NADP . Again, two NADPH are utilized per CO 2 fixed."
+    },
+    {
+     "type": "paragraph",
+     "text": "The next stage in the Calvin cycle is to regenerate RuBP . Five G3P molecules produce three RuBP molecules, using up three molecules of ATP. Since each CO 2 molecule produces two G3P molecules, three CO 2 molecules produce six G3P molecules, of which five are used to regenerate RuBP , leaving a net gain of one G3P molecule per three CO 2 molecules (as would be expected from the number of carbon atoms involved)."
+    },
+    {
+     "type": "paragraph",
+     "text": "The regeneration stage can be broken down into a series of steps."
+    },
+    {
+     "type": "list",
+     "text": "• Triose phosphate isomerase converts one of the G3P reversibly into dihydroxyacetone phosphate (DHAP), also a 3-carbon molecule. • Aldolase and fructose-1,6-bisphosphatase convert a G3P and a DHAP into fructose 6-phosphate (6C). A phosphate ion is lost into solution. • Then fixation of another CO 2 generates two more G3P. • F6P has two carbons removed by transketolase , giving erythrose-4-phosphate (E4P). The two carbons on transketolase are added to a G3P, giving the ketose xylulose-5-phosphate (Xu5P). • E4P and a DHAP (formed from one of the G3P from the second CO 2 fixation) are converted into sedoheptulose-1,7-bisphosphate (7C) by aldolase enzyme. • Sedoheptulose-1,7-bisphosphatase (one of only three enzymes of the Calvin cycle that are unique to plants) cleaves sedoheptulose-1,7-bisphosphate into sedoheptulose-7-phosphate , releasing an inorganic phosphate ion into solution. • Fixation of a third CO 2 generates two more G3P. The ketose S7P has two carbons removed by transketolase , giving ribose-5-phosphate (R5P), and the two carbons remaining on transketolase are transferred to one of the G3P, giving another Xu5P. This leaves one G3P as the product of fixation of 3 CO 2 , with generation of three pentoses that can be converted to Ru5P. • R5P is converted into ribulose-5-phosphate (Ru5P, RuP) by phosphopentose isomerase . Xu5P is converted into RuP by phosphopentose epimerase . • Finally, phosphoribulokinase (another plant-unique enzyme of the pathway) phosphorylates RuP into RuBP, ribulose-1,5-bisphosphate, completing the Calvin cycle . This requires the input of one ATP."
+    },
+    {
+     "type": "paragraph",
+     "text": "Thus, of six G3P produced, five are used to make three RuBP (5C) molecules (totaling 15 carbons), with only one G3P available for subsequent conversion to hexose. This requires nine ATP molecules and six NADPH molecules per three CO 2 molecules. The equation of the overall Calvin cycle is shown diagrammatically below."
+    },
+    {
+     "type": "paragraph",
+     "text": "RuBisCO also reacts competitively with O 2 instead of CO 2 in photorespiration . The rate of photorespiration is higher at high temperatures. Photorespiration turns RuBP into 3-PGA and 2-phosphoglycolate, a 2-carbon molecule that can be converted via glycolate and glyoxylate to glycine. Via the glycine cleavage system and tetrahydrofolate, two glycines are converted into serine plus CO 2 . Serine can be converted back to 3-phosphoglycerate. Thus, only 3 of 4 carbons from two phosphoglycolates can be converted back to 3-PGA. It can be seen that photorespiration has very negative consequences for the plant, because, rather than fixing CO 2 , this process leads to loss of CO 2 . C4 carbon fixation evolved to circumvent photorespiration, but can occur only in certain plants native to very warm or tropical climates—corn, for example. Furthermore, RuBisCOs catalyzing the light-independent reactions of photosynthesis generally exhibit an improved specificity for CO 2 relative to O 2 , in order to minimize the oxygenation reaction. This improved specificity evolved after RuBisCO incorporated a new protein subunit."
+    },
+    {
+     "type": "heading",
+     "text": "Products",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "The immediate products of one turn of the Calvin cycle are one glyceraldehyde-3-phosphate (G3P) molecule; 3 ADP and 2 NADP are also regenerated and later used again in the light-dependent reactions . Each G3P molecule is composed of 3 carbons. For the Calvin cycle to continue, RuBP (ribulose 1,5-bisphosphate) must be regenerated; 5 out of 6 carbons from the 2 G3P molecules are used for this purpose. Therefore, there is only 1 net carbon produced for each turn. To create one surplus G3P requires 3 carbons, and therefore 3 turns of the Calvin cycle. To make one glucose molecule (which can be created from 2 G3P molecules) would require 6 turns of the Calvin cycle. Surplus G3P can also be used to form other carbohydrates such as starch, sucrose, and cellulose, depending on what the plant needs."
+    },
+    {
+     "type": "heading",
+     "text": "Light-dependent regulation",
+     "level": 2
+    },
+    {
+     "type": "paragraph",
+     "text": "These reactions do not occur in the dark or at night. There is a light-dependent regulation of the cycle enzymes, as the third step requires NADPH."
+    },
+    {
+     "type": "paragraph",
+     "text": "There are two regulation systems at work when the cycle must be turned on or off: the thioredoxin / ferredoxin activation system, which activates some of the cycle enzymes; and the RuBisCo enzyme activation, active in the Calvin cycle, which involves its own activase."
+    },
+    {
+     "type": "paragraph",
+     "text": "The thioredoxin/ferredoxin system activates the enzymes glyceraldehyde-3-P dehydrogenase, glyceraldehyde-3-P phosphatase, fructose-1,6-bisphosphatase, sedoheptulose-1,7-bisphosphatase, and ribulose-5-phosphatase kinase, which are key points of the process. This happens when light is available, as the ferredoxin protein is reduced in the photosystem I complex of the thylakoid electron chain when electrons are circulating through it. Ferredoxin then binds to and reduces the thioredoxin protein, which activates the cycle enzymes by severing a cystine bond found in all these enzymes. This is a dynamic process as the same bond is formed again by other proteins that deactivate the enzymes. The implications of this process are that the enzymes remain mostly activated by day and are deactivated in the dark when there is no more reduced ferredoxin available."
+    },
+    {
+     "type": "paragraph",
+     "text": "The enzyme RuBisCo has its own, more complex activation process. It requires that a specific lysine amino acid be carbamylated to activate the enzyme. This lysine binds to RuBP and leads to a non-functional state if left uncarbamylated. A specific activase enzyme, called RuBisCo activase , helps this carbamylation process by removing one proton from the lysine and making the binding of the carbon dioxide molecule possible. Even then the RuBisCo enzyme is not yet functional, as it needs a magnesium ion bound to the lysine to function. This magnesium ion is released from the thylakoid lumen when the inner pH drops due to the active pumping of protons from the electron flow. RuBisCo activase itself is activated by increased concentrations of ATP in the stroma caused by its phosphorylation ."
+    },
+    {
+     "type": "heading",
+     "text": "See also",
+     "level": 2
+    },
+    {
+     "type": "list",
+     "text": "• Wood–Ljungdahl pathway – Set of biochemical reactions used by some bacteria"
+    },
+    {
+     "type": "heading",
+     "text": "References",
+     "level": 2
+    },
+    {
+     "type": "list",
+     "text": "• ↑ Silverstein, Alvin (2008). Photosynthesis . Twenty-First Century Books. p. 21. ISBN 9780822567981 . • ↑ Cushman, John C. (2001). \"A plastic photosynthetic adaptation to arid environments\" . Plant Physiology . 127 (4): 1439– 1448. doi : 10.1104/pp.010818 . PMC 1540176 . PMID 11743087 . • ↑ Sainis, Jayashree Krishna; Dani, Diksha Narhar; Dey, Gautam Kumar (2003-01-01). \"Involvement of thylakoid membranes in supramolecular organisation of Calvin cycle enzymes inAnacystis nidulans\" . Journal of Plant Physiology . 160 (1): 23– 32. Bibcode : 2003JPPhy.160...23S . doi : 10.1078/0176-1617-00849 . ISSN 0176-1617 . PMID 12685042 . The results suggested that the integrity of thylakoid membranes may be essential for the organisation of sequential enzymes of the Calvin cycle in vivo and facilitate their functioning. • ↑ Bassham J, Benson A, Calvin M (1950). \"The path of carbon in photosynthesis\" (PDF) . J Biol Chem . 185 (2): 781– 7. doi : 10.2172/910351 . OSTI 910351 . PMID 14774424 . Archived from the original (PDF) on 2009-02-19 . Retrieved 2013-07-03 . • ↑ Campbell, Neil A.; Brad Williamson; Robin J. Heyden (2006). Biology: Exploring Life . Boston, Massachusetts: Pearson Prentice Hall. ISBN 0-13-250882-6 . Archived from the original on 2014-11-02 . Retrieved 2013-07-03 . • 1 2 3 4 5 6 7 8 9 10 11 12 13 14 Blankenship, Robert E. (2002). \"Chapter 9: Carbon Metabolism\". Molecular Mechanisms of Photosynthesis . Blackwell Publishing. pp. 171– 203. ISBN 0-632-04321-0 . • ↑ Farazdaghi H (2009). \"Modeling the Kinetics of Activation and Reaction of Rubisco from Gas Exchange\". Photosynthesis in silico . Advances in Photosynthesis and Respiration. Vol. 29. pp. 275– 294. doi : 10.1007/978-1-4020-9237-4_12 . ISBN 978-1-4020-9236-7 . • ↑ Lorimer, G.H.; Andrews, T.J.; Pierce, J.; Schloss, J.V. (1986). \"2´-carboxy-3-keto-D-arabinitol 1,5-bisphosphate, the six-carbon intermediate of the ribulose bisphosphate carboxylase reaction\" . Phil. Trans. R. Soc. Lond. B . 313 (1162): 397– 407. Bibcode : 1986RSPTB.313..397L . doi : 10.1098/rstb.1986.0046 . • ↑ Campbell, and Reece Biology: 8th Edition, page 198. Benjamin Cummings, December 7, 2007. • ↑ Schulz, L; Guo, Z; Zarzycki, J; Steinchen, W; Schuller, JM; Heimerl, T; Prinz, S; Mueller-Cajar, O; Erb, TJ; Hochberg, GKA (14 October 2022). \"Evolution of increased complexity and specificity at the dawn of form I Rubiscos\" . Science . 378 (6616): 155– 160. Bibcode : 2022Sci...378..155S . doi : 10.1126/science.abq1416 . PMID 36227987 . S2CID 252897276 . • ↑ Russell, Wolfe et al. Biology: Exploring the Diversity of Life .Toronto:Nelson College Indigenous,1st ed, Vol. 1, 2010, pg 151 • ↑ Schreier, Tina; Hibberd, Julian (March 2019). \"Variations in the Calvin–Benson cycle: selection pressures and optimization?\" . Journal of Experimental Botany . 70 (6): 1697– 1701. doi : 10.1093/jxb/erz078 . PMC 6436154 . PMID 30916343 – via Oxford Academic. • ↑ Konwarh, Rocktotpal; Abda, Ebrahim M.; Haregu, Simatsidk; Singh, Anand Pratap (2022-01-01). \"Exemplary evidence of bio-nano crosstalk between carbon dots and plant systems\" . In Khan, Raju; Murali, S.; Gogoi, Satyabrat (eds.). Carbon Dots in Agricultural Systems . Academic Press. pp. 155– 173. ISBN 978-0-323-90260-1 . Retrieved 2023-04-22 . • ↑ Besse, I; B (1997). \"Thioredoxin-linked animal and plant processes: the new generation\" . Bot. Bull. Acad. Sin. 38 : 1– 11. • ↑ Ruuska, Sari A.; Andrews, T. John; Badger, Murray R.; Price, G. Dean; von Caemmerer, Susanne (2000-02-01). \"The Role of Chloroplast Electron Transport and Metabolites in Modulating Rubisco Activity in Tobacco. Insights from Transgenic Plants with Reduced Amounts of Cytochrome b/f Complex or Glyceraldehyde 3-Phosphate Dehydrogenase\" . Plant Physiology . 122 (2): 491– 504. doi : 10.1104/pp.122.2.491 . ISSN 1532-2548 . PMC 58886 . PMID 10677442 ."
+    },
+    {
+     "type": "list",
+     "text": "• Bassham JA (2003). \"Mapping the carbon reduction cycle: a personal retrospective\". Photosynth. Res . 76 ( 1– 3): 35– 52. Bibcode : 2003PhoRe..76...35B . doi : 10.1023/A:1024929725022 . PMID 16228564 . S2CID 52854452 . • Diwan, Joyce J. (2005). \"Photosynthetic Dark Reaction\" . Biochemistry and Biophysics, Rensselaer Polytechnic Institute. Archived from the original on 2005-03-16 . Retrieved 2012-10-24 . • Portis, Archie; Parry, Martin (2007). \"Discoveries in Rubisco (Ribulose 1,5-bisphosphate carboxylase/oxygenase): a historical perspective\" (PDF) . Photosynthesis Research . 94 (1): 121– 143. Bibcode : 2007PhoRe..94..121P . doi : 10.1007/s11120-007-9225-6 . PMID 17665149 . S2CID 39767233 . Archived from the original (PDF) on 2012-03-12."
+    },
+    {
+     "type": "heading",
+     "text": "Further reading",
+     "level": 2
+    },
+    {
+     "type": "list",
+     "text": "• Rubisco Activase, from the Plant Physiology Online website Archived 2009-02-18 at the Wayback Machine • Thioredoxins, from the Plant Physiology Online website Archived 2008-06-16 at the Wayback Machine"
+    },
+    {
+     "type": "heading",
+     "text": "External links",
+     "level": 2
+    },
+    {
+     "type": "list",
+     "text": "• The Biochemistry of the Calvin Cycle at Rensselaer Polytechnic Institute • The Calvin Cycle and the Pentose Phosphate Pathway from Biochemistry , Fifth Edition by Jeremy M. Berg, John L. Tymoczko and Lubert Stryer. Published by W. H. Freeman and Company (2002)."
+    }
+   ],
+   "questions": [
+    {
+     "question": "Who discovered the Calvin cycle and in what year?",
+     "expected_answer": "discovered in 1950 by Melvin Calvin, James Bassham and Andrew Benson",
+     "evidence": "discovered in 1950 by Melvin Calvin"
+    },
+    {
+     "question": "Where in the cell do the Calvin cycle reactions take place?",
+     "expected_answer": "in the stroma of the chloroplast",
+     "evidence": "take place in the stroma of chloroplast"
+    },
+    {
+     "question": "How many turns of the cycle are needed to make one glucose molecule?",
+     "expected_answer": "six turns",
+     "evidence": "require 6 turns of the Calvin cycle"
+    },
+    {
+     "question": "What is the key enzyme of the Calvin cycle?",
+     "expected_answer": "RuBisCO",
+     "evidence": "key enzyme of the cycle is called RuBisCO"
+    },
+    {
+     "question": "Are six-carbon sugars a direct product of the Calvin cycle?",
+     "expected_answer": "no, the products are three-carbon triose phosphates such as G3P",
+     "evidence": "sugars are not products of the Calvin cycle"
+    },
+    {
+     "question": "How many ATP and NADPH molecules are consumed per three CO2 molecules?",
+     "expected_answer": "nine ATP and six NADPH",
+     "evidence": "requires nine ATP molecules and six NADPH molecules"
+    },
+    {
+     "question": "What does RuBisCO activase do?",
+     "expected_answer": "it helps carbamylation by removing a proton from the lysine",
+     "evidence": "helps this carbamylation process"
+    },
+    {
+     "question": "Why is calling it the dark reaction misleading?",
+     "expected_answer": "the cycle does not occur in the dark because it needs NADPH from the light reactions",
+     "evidence": "does not occur in the dark or during nighttime"
+    },
+    {
+     "question": "What is the optimal temperature for the Calvin cycle in wheat?",
+     "expected_answer": null,
+     "evidence": null
+    },
+    {
+     "question": "How is the Krebs cycle regulated in animal mitochondria?",
+     "expected_answer": null,
+     "evidence": null
+    }
+   ]
+  },
+  {
+   "url": "https://en.wikipedia.org/wiki/Harappan_architecture",
+   "title": "Harappan architecture - Wikipedia",
+   "genre": "history article",
+   "blocks": [
+    {
+     "type": "paragraph",
+     "text": "Harappan architecture is the architecture of the Bronze Age Indus Valley civilization , an ancient society of people who lived during c. 3300 BCE to 1300 BCE in the Indus Valley of modern-day Pakistan and India ."
+    },
+    {
+     "type": "paragraph",
+     "text": "The civilization's cities were noted for their urban planning , baked brick houses, elaborate drainage systems , water supply systems , clusters of large non-residential buildings, and new techniques in handicraft ( carnelian products, seal carving) and metallurgy ( copper , bronze , lead , and tin ). Its large urban centres of Mohenjo-daro and Harappa very likely grew to containing between 30,000 and 60,000 individuals, and the civilisation itself during its height may have contained between one and five million individuals."
+    },
+    {
+     "type": "paragraph",
+     "text": "Harappan culture was heavily influenced through its integration into international trade and contact due to its location along the Indus River. Signs of urbanization in the Indus Valley began as early as 6000 BCE, in the Neolithic , and many towns and cities had been established by 3200 BCE, in the Early Harappan phase. The architectural transition between Early and Mature Harappan phases took place in the sites of Amri , Nausharo , Ghazi Shah , and Banawali . By 2500 BCE, in the Mature Harappan phase, the civilization had become the eastern anchor of a network of trade routes including the Mesopotamian city-states, the Gulf , Iranian Plateau , and Central Asia ."
+    },
+    {
+     "type": "paragraph",
+     "text": "Through its urbanization, the Harappan Civilization brought together many kinds of people from different ethnic and linguistic groups into a socio-cultural whole, in turn affecting its architecture and town planning."
+    },
+    {
+     "type": "heading",
+     "text": "Overview",
+     "level": 2
+    },
+    {
+     "type": "heading",
+     "text": "Elements of Harappan architecture",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "Art of the Indus Valley civilization architecture was indigenous and without any influence . Sculpture had no integral role in architecture; they were found separately . There was a concentration of utility factor rather than aesthetic factor presumably because they were primarily traders. Harappan architecture of the Indus civilization focused on functional expression rather than pure decoration. Evidence shows that the Indus culture lacked magnificent buildings such as palaces, monuments, discrepancies, and tombs, on the contrary, most buildings were large-scale public buildings, commodious houses, or practical residences, which proved to be the first complex ancient society based on egalitarianism."
+    },
+    {
+     "type": "heading",
+     "text": "Planning",
+     "level": 4
+    },
+    {
+     "type": "paragraph",
+     "text": "A notable feature of Harappan architecture is that of a developed infrastructural city plan, in that they had sophisticated systems to control the flow of water and waste with public wells and drains that may have required advanced planning to implement. The cities were divided into rectilinear grids divided by roads which intersected at right angles, encircled by fortifications, with each block containing a network of houses and public wells. Harappan cities featured urban and social elements such as roads, fire pits, kilns, and industrial buildings, and were primarily functional in purpose rather than aesthetic. The city sewerage, plumbing, and drainage systems were distributed in the network of the grid planning by early hydro-engineers to be functionally used and maintained. The Harappan civilization seems to also be capable of astrological observation and alignment, as some evidence exists that Mohenjo-daro was aligned with the star \"Rohini\"."
+    },
+    {
+     "type": "paragraph",
+     "text": "Mohenjo-daro had a planned layout with rectilinear buildings arranged on a grid plan . Most were built of fired and mortared brick ; some incorporated sun-dried mud-brick and wooden superstructures."
+    },
+    {
+     "type": "paragraph",
+     "text": "Sites were often raised, or built on man made hills. This could be to combat flooding in the nearby areas. Another aspect of the architecture is they often built walls around their entire cities. This could have served several different needs. Many believe that the walls were built as defensive structures, where “Large and impressive construction works can be used to intimidate potential attackers (Trigger 1990)”. It was also an obvious feature to show the city was strong and powerful by being able to divert resources and labor to make such a large structure and not focus all of their energy on survival. This was not the only purpose for the wall, it is thought that the wall also served as protection from floods. There is also evidence of a tapering at the bottom of the wall to guide the water away from the city."
+    },
+    {
+     "type": "paragraph",
+     "text": "The city could be split into two different sections: an upper \"acropolis\" or citadel and a \"lower town\". The lower town consisted of lower valued residential buildings located on the eastern side of the city, while the upper acropolis would be on the western side of the city which contained the higher value buildings and public buildings. The acropolis was a “parallelogram that was 400–500 yards north-south and 200–300 yards east-west” It was also thought that the acropolis area would be built on the highest part of the mound in the city showing the importance and status of the area was much higher than the rest of the area. Another feature which suggests the acropolis is of higher importance is that the fortifications around the area were bigger and stronger than those around the rest of the city."
+    },
+    {
+     "type": "heading",
+     "text": "Large structures",
+     "level": 4
+    },
+    {
+     "type": "paragraph",
+     "text": "The Harappan civilization was capable of building large structures that demanded significant engineering knowledge."
+    },
+    {
+     "type": "paragraph",
+     "text": "Citadels were upper parts of the cities possibly reserved for an elite class of economically rich and politically powerful people. Roads were cut at right angles and thus usually formed rectangular shapes. Houses, assembly halls, and even multi-storey buildings were present. Buildings were constructed from stone, mud-brick and wood."
+    },
+    {
+     "type": "paragraph",
+     "text": "Public baths constructed of bricks were used for rituals and ceremonies. They were accompanied by various small rooms. Leakages and cracks are scarce."
+    },
+    {
+     "type": "paragraph",
+     "text": "Granaries were often found in citadels and enabled the inhabitants' prosperity. They were also found at Lothal dockyard to facilitate import and export of grain. The \"Great Granary\" in Mohenjo-daro is the largest and best known example, but its usage as an actual granary has been disputed by researchers."
+    },
+    {
+     "type": "paragraph",
+     "text": "Water management was highly developed by the Harappan civilization. Large scale water works, such as drainage systems, could be covered to cure blockages. Dams were also constructed that controlled water inlets."
+    },
+    {
+     "type": "paragraph",
+     "text": "Dockyards such as that at Lothal were built away from the main current to avoid deposition of silt . There was also a wooden lock gate system to avoid tidal flow ."
+    },
+    {
+     "type": "paragraph",
+     "text": "Artificial lakes were cut out of stone to store water, as well as rain."
+    },
+    {
+     "type": "paragraph",
+     "text": "Corbelling was a technique used extensively by the Harappans to construct stone arches. There is evidence of the civilization building large vaulted culverts in Mohenjo-daro."
+    },
+    {
+     "type": "heading",
+     "text": "Water and sanitation technologies",
+     "level": 4
+    },
+    {
+     "type": "paragraph",
+     "text": "The Harappa civilization revealed a complex mercantile society based on the well organized and comprehensive urban planning, which included sophisticated water management and sewerage systems to allow structures such as dams, wells, baths, and fountains. The plumbing and sewerage systems were formed by early hydro-engineers to allow water and sanitation within the city. These systems were effectively used and maintained by ancient Harappan residents."
+    },
+    {
+     "type": "paragraph",
+     "text": "Dams were hydro-structure built along the Indus River for water management purposes such as collecting, storing and diverting water."
+    },
+    {
+     "type": "paragraph",
+     "text": "Water cisterns and reservoirs were used in water storage systems including aqueducts and basins for the purpose of water distribution in agricultural practices, some of which took advantage of the terrain height differences to convey and store water."
+    },
+    {
+     "type": "paragraph",
+     "text": "Fountains were set up and connected by water channels to supply for households for purposes of drinking and bathing."
+    },
+    {
+     "type": "paragraph",
+     "text": "Drainage system and drains were built to make efficient disposal of water waste and residual solid in a sustainable way, which had inspection manholes at regular intervals to ensure efficient operation and proper management."
+    },
+    {
+     "type": "heading",
+     "text": "Materials",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "The materials of houses depended on the location of the building. If the house was more rural the bricks would be mud. If the house was in an urban area then the bricks would be baked. The bricks were made in standardised ratios of 1x2x4. “Houses range from 1–2 stories in height, with a central courtyard around which the rooms were arranged”"
+    },
+    {
+     "type": "heading",
+     "text": "History",
+     "level": 2
+    },
+    {
+     "type": "heading",
+     "text": "Early Harappan phase",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "The early Harappan phase, as defined by M.R. Mughal, spans roughly between 3200 and 2500 B.C.E. Between the two periods, the number of archeological sites dated to the Mature Harappan Phase was roughly over double to that of the Early Harappan, implying a significant urban growth during the Early Phase. There is not much evidence to show much urbanization, however; most Early Harappan structures were of a small scale and did not expand into public spaces or display a sense of social class. Early Harappan establishments settled in diverse landscapes, such as mountains and alluvium valleys (deposits of fertile soil)."
+    },
+    {
+     "type": "heading",
+     "text": "Early to mature transition",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "There is evidence that the shift from the early to mature Harappan ages that point towards a gradual transition, with rapid development and geographical urban expansion. During this transition, a significant number of Harappan settlements were abandoned, perhaps due to shifting geography and climate."
+    },
+    {
+     "type": "heading",
+     "text": "Mature Harappan phase",
+     "level": 3
+    },
+    {
+     "type": "paragraph",
+     "text": "The mature phase spans roughly between 2500 and 1900 B.C.E. and is much more reliably dated than the Early Phase. It is distinctive in its urban development, and was shaped by the behavior and activity of a sophisticated societal network. The structures reveal a hierarchy in social classes, and also evidence of extensive trading and farming."
+    },
+    {
+     "type": "heading",
+     "text": "Harappan revival",
+     "level": 2
+    },
+    {
+     "type": "paragraph",
+     "text": "There are few buildings built in the Harappan Revival style. The best well-known is the Mohenjo-daro Museum . It is made of bricks with a very similar color to the buildings from Mohenjo-daro or Harappa . One entrance has a geometric pattern made of bricks similar to those of the original gates."
+    },
+    {
+     "type": "heading",
+     "text": "See also",
+     "level": 2
+    },
+    {
+     "type": "list",
+     "text": "• Lothal • Dholavira • Mehrgarh • Sokhta Koh • Sanitation of the Indus Valley Civilisation"
+    },
+    {
+     "type": "heading",
+     "text": "Notes",
+     "level": 2
+    },
+    {
+     "type": "list",
+     "text": "• ↑ Dyson: \"Mohenjo-daro and Harappa may each have contained between 30,000 and 60,000 people (perhaps more in the former case). Water transport was crucial for the provisioning of these and other cities. That said, the vast majority of people lived in rural areas. At the height of the Indus valley civilization the subcontinent may have contained 4-6 million people.\" • ↑ McIntosh: \"The enormous potential of the greater Indus region offered scope for huge population increase; by the end of the Mature Harappan period, the Harappans are estimated to have numbered somewhere between 1 and 5 million, probably well below the region's carrying capacity.\""
+    },
+    {
+     "type": "heading",
+     "text": "References",
+     "level": 2
+    },
+    {
+     "type": "list",
+     "text": "• 1 2 3 4 5 6 7 8 9 Possehl, G. L. (2000). \"The Mature Harappan Phase\". Bulletin of the Deccan College Research Institute . 60/61: 243– 251. ISSN 0045-9801 . JSTOR 42936618 . • ↑ Wright 2009 , pp. 115–125. • 1 2 Dyson 2018 , p. 29. • 1 2 McIntosh 2008 , p. 187. • 1 2 3 4 Possehl, G. L. (2000). \"The Early Harappan Phase\". of the Deccan College Research Institute . 60/61: 227– 241. ISSN 0045-9801 . JSTOR 42936617 . • ↑ Iyengar, R. N. (2008). \"Reviewed work: Harappan Architecture and Civil Engineering, J. P. Joshi\". Current Science . 95 (3): 404– 406. JSTOR 24102770 . • ↑ Green, Adam S. (2021). \"Killing the Priest-King: Addressing Egalitarianism in the Indus Civilization\" . Journal of Archaeological Research . 29 (2): 153– 202. doi : 10.1007/s10814-020-09147-9 . S2CID 224872813 . • 1 2 3 4 5 Iyengar, R. N. (2008). \"Review of Harappan Architecture and Civil Engineering\". Current Science . 95 (3): 404– 406. ISSN 0011-3891 . JSTOR 24102770 . • 1 2 3 Khan, S.; Dialynas, E.; Kasaraneni, V. K.; Angelakis, A. N. (2020). \"Similarities of Minoan and Indus Valley Hydro-Technologies\" . Sustainability . 12 (12): 4897. doi : 10.3390/su12124897 . • ↑ Pant, Mohan; Fumo, Shjui Fumo (May 2005). \"The Grid and Modular Measures in The Town Planning of Mohenjodaro and Kathmandu Valley: A Study on Modular Measures in Block and Plot Divisions in the Planning of Mohenjodaro and Sirkap (Pakistan), and Thimi (Kathmandu Valley)\" . Journal of Asian Architecture and Building Engineering . 4 (1): 51– 59. doi : 10.3130/jaabe.4.51 . S2CID 113918069 . • 1 2 3 \"Exploring the use of Monumental Public Architecture and Sculpture in the Harappan Society\" . anthrojournal.com . Retrieved 2018-11-21 . • ↑ \"Indus River Valley civilizations\" . Khan Academy . Retrieved 2018-11-21 . • 1 2 3 \"Harappa: An Overview of Harappan Architecture and Town Planning\" . World History Encyclopedia . Retrieved 2018-11-15 . • 1 2 Miller, Daniel (June 18, 1984). \"Ideology and the Harappan Civilization\" (PDF) . Journal of Anthropological Archaeology . 4 : 34– 71. doi : 10.1016/0278-4165(85)90013-3 . • ↑ Tsatsafinos, C. Ancient Greek Dams. In Proceedings of the Common Conference of HHA, HWA, and HCoMWR, Athens, Greece, 10–12 December 2015; pp. 997-1004. • ↑ Subramanian, T.S. The rise and fall of a Harappan city. Frontline Archeol. India's Natl. Mag. 2010, 27 , 5-18. Available online: https://www.frontline.in/static/html/fl2712/stories/20100618271206200.htm (accessed on 19 August 2019) • ↑ Yannopoulos, Stavros; Lyberatos, Gerasimos; Theodossiou, Nicolaos; Li, Wang; Valipour, Mohammad; Tamburrino, Aldo; Angelakis, Andreas (2015). \"Evolution of Water Lifting Devices (Pumps) over the Centuries Worldwide\" . Water . 7 (12): 5031– 5060. doi : 10.3390/w7095031 ."
+    },
+    {
+     "type": "heading",
+     "text": "Sources",
+     "level": 3
+    },
+    {
+     "type": "list",
+     "text": "• Dyson, Tim (2018). A Population History of India: From the First Modern People to the Present Day . Oxford University Press . ISBN 978-0-19-882905-8 . • McIntosh, Jane (2008). The Ancient Indus Valley: New Perspectives . ABC-Clio . ISBN 978-1-57607-907-2 . • Wright, Rita P. (2009). The Ancient Indus: Urbanism, Economy, and Society . Cambridge University Press . ISBN 978-0-521-57219-4 . Retrieved 29 September 2013 ."
+    },
+    {
+     "type": "heading",
+     "text": "External links",
+     "level": 2
+    },
+    {
+     "type": "list",
+     "text": "• Harappan Civilization: An Analysis in Modern Context • Recent Indus Discoveries • How Indus Towns Developed • INDUS VALLEY CIVILISATION ARCHITECTURE • Harappa.com on tools"
+    }
+   ],
+   "questions": [
+    {
+     "question": "What ratio were Harappan bricks made in?",
+     "expected_answer": "a standardised ratio of 1x2x4",
+     "evidence": "standardised ratios of 1x2x4"
+    },
+    {
+     "question": "How many people are thought to have lived in Mohenjo-daro and Harappa?",
+     "expected_answer": "between 30,000 and 60,000 individuals",
+     "evidence": "between 30,000 and 60,000 individuals"
+    },
+    {
+     "question": "What were the two sections a Harappan city was divided into?",
+     "expected_answer": "an upper acropolis or citadel and a lower town",
+     "evidence": "citadel and a"
+    },
+    {
+     "question": "Why were dockyards such as Lothal built away from the main current?",
+     "expected_answer": "to avoid deposition of silt",
+     "evidence": "avoid deposition of silt"
+    },
+    {
+     "question": "What technique did the Harappans use to build stone arches?",
+     "expected_answer": "corbelling",
+     "evidence": "was a technique used extensively"
+    },
+    {
+     "question": "What period does the mature Harappan phase span?",
+     "expected_answer": "roughly 2500 to 1900 BCE",
+     "evidence": "spans roughly between 2500 and 1900"
+    },
+    {
+     "question": "Which is the best known building in the Harappan Revival style?",
+     "expected_answer": "the Mohenjo-daro Museum",
+     "evidence": "well-known is the Mohenjo-daro Museum"
+    },
+    {
+     "question": "What feature did the drains have at regular intervals?",
+     "expected_answer": "inspection manholes",
+     "evidence": "inspection manholes at regular intervals"
+    },
+    {
+     "question": "Has the Indus script been deciphered?",
+     "expected_answer": null,
+     "evidence": null
+    },
+    {
+     "question": "Which crops did the Harappans grow on their farms?",
+     "expected_answer": null,
+     "evidence": null
+    }
+   ]
+  }
+ ]
+}

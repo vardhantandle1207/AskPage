@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AskPage</title>
+  <link rel="stylesheet" href="sidepanel.css" />
+</head>
+<body>
+
+  <!-- Top bar: page title + indexing status -->
+  <header class="topbar">
+    <div class="brand-row">
+      <div class="brand">AskPage</div>
+      <button id="settings-button" class="icon-button" title="Settings" aria-label="Settings">⚙</button>
+    </div>
+    <div id="page-title" class="page-title">Loading page…</div>
+    <div id="status" class="status">Reading page…</div>
+    <div id="settings" class="settings" hidden>
+      <label>Backend URL <input id="backend-url" type="url" placeholder="http://localhost:8000" /></label>
+      <button id="save-settings">Save</button>
+    </div>
+  </header>
+
+  <!-- Chat messages appear here -->
+  <main id="chat" class="chat">
+    <div class="message assistant">
+      Ask me anything about this page.
+    </div>
+  </main>
+
+  <!-- Question box -->
+  <footer class="composer">
+    <textarea
+      id="question-input"
+      rows="2"
+      placeholder="Ask a question about this page"
+      disabled
+    ></textarea>
+    <button id="ask-button" disabled>Ask</button>
+  </footer>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>

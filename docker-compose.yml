@@ -1,0 +1,24 @@
+# docker-compose.yml — one command to build and run the backend locally.
+#
+#   ollama serve                     # in another terminal (or the Ollama app)
+#   docker compose up -d --build     # build image + start backend on :8000
+#   docker compose logs -f           # watch logs
+#   docker compose down              # stop
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    environment:
+      # Ollama runs on the host, not in the container. host.docker.internal
+      # is Docker's name for "the machine running Docker".
+      OLLAMA_HOST: http://host.docker.internal:11434
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # needed on Linux; harmless on Mac/Windows
+    volumes:
+      # Traces survive container rebuilds.
+      - ./backend/data:/app/data
+    restart: unless-stopped

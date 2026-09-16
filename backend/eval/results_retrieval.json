@@ -1,0 +1,536 @@
+{
+  "setup": {
+    "questions": 40,
+    "answerable": 32,
+    "unanswerable": 8,
+    "pages": [
+      {
+        "title": "venv — Creation of virtual environments — Python 3.14.7 documentation",
+        "chunks": 23,
+        "sections": 5,
+        "index_seconds": 10.3
+      },
+      {
+        "title": "Using the Fetch API - Web APIs | MDN",
+        "chunks": 23,
+        "sections": 16,
+        "index_seconds": 5.67
+      },
+      {
+        "title": "Calvin cycle - Wikipedia",
+        "chunks": 21,
+        "sections": 10,
+        "index_seconds": 5.2
+      },
+      {
+        "title": "Harappan architecture - Wikipedia",
+        "chunks": 21,
+        "sections": 15,
+        "index_seconds": 3.74
+      }
+    ],
+    "top_k": 5,
+    "repeats": 3,
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "reranker_model": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+    "machine": "evaluation sandbox CPU — re-run locally for your own latency"
+  },
+  "retrieval": {
+    "dense": {
+      "hit@1": 0.625,
+      "hit@3": 0.781,
+      "hit@5": 0.875,
+      "mrr": 0.717,
+      "latency_ms": {
+        "p50": 20.0,
+        "p95": 22.7,
+        "mean": 20.2
+      },
+      "retrieval_ms_p50": 20.0,
+      "rerank_ms_p50": 0
+    },
+    "sparse": {
+      "hit@1": 0.781,
+      "hit@3": 1.0,
+      "hit@5": 1.0,
+      "mrr": 0.875,
+      "latency_ms": {
+        "p50": 0.1,
+        "p95": 0.1,
+        "mean": 0.1
+      },
+      "retrieval_ms_p50": 0.1,
+      "rerank_ms_p50": 0
+    },
+    "hybrid": {
+      "hit@1": 0.688,
+      "hit@3": 0.875,
+      "hit@5": 0.938,
+      "mrr": 0.786,
+      "latency_ms": {
+        "p50": 18.2,
+        "p95": 20.3,
+        "mean": 18.2
+      },
+      "retrieval_ms_p50": 18.1,
+      "rerank_ms_p50": 0
+    },
+    "hybrid+rerank": {
+      "hit@1": 0.844,
+      "hit@3": 1.0,
+      "hit@5": 1.0,
+      "mrr": 0.917,
+      "latency_ms": {
+        "p50": 1505.6,
+        "p95": 2156.4,
+        "mean": 1597.6
+      },
+      "retrieval_ms_p50": 23.0,
+      "rerank_ms_p50": 1482.5
+    }
+  },
+  "per_page": {
+    "venv — Creation of virtual environments — Python 3.14.7 documentation": {
+      "genre": "technical reference",
+      "chunks": 23,
+      "hit@1": {
+        "dense": 0.25,
+        "sparse": 0.625,
+        "hybrid": 0.375,
+        "hybrid+rerank": 0.875
+      }
+    },
+    "Using the Fetch API - Web APIs | MDN": {
+      "genre": "developer tutorial",
+      "chunks": 23,
+      "hit@1": {
+        "dense": 0.875,
+        "sparse": 1.0,
+        "hybrid": 0.875,
+        "hybrid+rerank": 1.0
+      }
+    },
+    "Calvin cycle - Wikipedia": {
+      "genre": "science encyclopedia",
+      "chunks": 21,
+      "hit@1": {
+        "dense": 0.75,
+        "sparse": 0.75,
+        "hybrid": 0.875,
+        "hybrid+rerank": 0.75
+      }
+    },
+    "Harappan architecture - Wikipedia": {
+      "genre": "history article",
+      "chunks": 21,
+      "hit@1": {
+        "dense": 0.625,
+        "sparse": 0.75,
+        "hybrid": 0.625,
+        "hybrid+rerank": 0.75
+      }
+    }
+  },
+  "details": [
+    {
+      "page": "venv — Creation of virtual environments — Python 3.14.7 documentation",
+      "question": "What file does venv put in the target directory, and what key does it contain?",
+      "answerable": true,
+      "ranks": {
+        "dense": null,
+        "sparse": 1,
+        "hybrid": 4,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "venv — Creation of virtual environments — Python 3.14.7 documentation",
+      "question": "Which option gives the virtual environment access to the system site-packages directory?",
+      "answerable": true,
+      "ranks": {
+        "dense": 5,
+        "sparse": 1,
+        "hybrid": 2,
+        "hybrid+rerank": 2
+      }
+    },
+    {
+      "page": "venv — Creation of virtual environments — Python 3.14.7 documentation",
+      "question": "How can I tell from inside Python whether I am running in a virtual environment?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 2,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "venv — Creation of virtual environments — Python 3.14.7 documentation",
+      "question": "What command activates a venv in the fish shell?",
+      "answerable": true,
+      "ranks": {
+        "dense": 2,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "venv — Creation of virtual environments — Python 3.14.7 documentation",
+      "question": "Which flag skips installing pip into the new environment?",
+      "answerable": true,
+      "ranks": {
+        "dense": null,
+        "sparse": 1,
+        "hybrid": 4,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "venv — Creation of virtual environments — Python 3.14.7 documentation",
+      "question": "Why are virtual environments not portable between locations?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 3,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "venv — Creation of virtual environments — Python 3.14.7 documentation",
+      "question": "What does the --prompt option do?",
+      "answerable": true,
+      "ranks": {
+        "dense": null,
+        "sparse": 3,
+        "hybrid": null,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "venv — Creation of virtual environments — Python 3.14.7 documentation",
+      "question": "Which environment variable is set when a virtual environment is activated?",
+      "answerable": true,
+      "ranks": {
+        "dense": 2,
+        "sparse": 1,
+        "hybrid": 2,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "venv — Creation of virtual environments — Python 3.14.7 documentation",
+      "question": "How do I create a conda environment with a specific Python version?",
+      "answerable": false,
+      "ranks": {}
+    },
+    {
+      "page": "venv — Creation of virtual environments — Python 3.14.7 documentation",
+      "question": "How much memory does a virtual environment typically use at runtime?",
+      "answerable": false,
+      "ranks": {}
+    },
+    {
+      "page": "Using the Fetch API - Web APIs | MDN",
+      "question": "What does the Response.ok property return?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Using the Fetch API - Web APIs | MDN",
+      "question": "Can I include a body with a GET request?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Using the Fetch API - Web APIs | MDN",
+      "question": "How do I cancel a fetch request that is in flight?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Using the Fetch API - Web APIs | MDN",
+      "question": "What is the default value of the mode option for fetch requests?",
+      "answerable": true,
+      "ranks": {
+        "dense": 2,
+        "sparse": 1,
+        "hybrid": 2,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Using the Fetch API - Web APIs | MDN",
+      "question": "What values can the credentials option take?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Using the Fetch API - Web APIs | MDN",
+      "question": "What do I have to call if I need to read a response body more than once?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Using the Fetch API - Web APIs | MDN",
+      "question": "Does fetch reject its promise when the server returns a 404?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Using the Fetch API - Web APIs | MDN",
+      "question": "What does it mean for a stream to be disturbed?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Using the Fetch API - Web APIs | MDN",
+      "question": "How many concurrent fetch requests will Chrome allow per domain?",
+      "answerable": false,
+      "ranks": {}
+    },
+    {
+      "page": "Using the Fetch API - Web APIs | MDN",
+      "question": "How do I configure request interceptors in axios?",
+      "answerable": false,
+      "ranks": {}
+    },
+    {
+      "page": "Calvin cycle - Wikipedia",
+      "question": "Who discovered the Calvin cycle and in what year?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Calvin cycle - Wikipedia",
+      "question": "Where in the cell do the Calvin cycle reactions take place?",
+      "answerable": true,
+      "ranks": {
+        "dense": 2,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Calvin cycle - Wikipedia",
+      "question": "How many turns of the cycle are needed to make one glucose molecule?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Calvin cycle - Wikipedia",
+      "question": "What is the key enzyme of the Calvin cycle?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Calvin cycle - Wikipedia",
+      "question": "Are six-carbon sugars a direct product of the Calvin cycle?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Calvin cycle - Wikipedia",
+      "question": "How many ATP and NADPH molecules are consumed per three CO2 molecules?",
+      "answerable": true,
+      "ranks": {
+        "dense": 5,
+        "sparse": 3,
+        "hybrid": 3,
+        "hybrid+rerank": 3
+      }
+    },
+    {
+      "page": "Calvin cycle - Wikipedia",
+      "question": "What does RuBisCO activase do?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Calvin cycle - Wikipedia",
+      "question": "Why is calling it the dark reaction misleading?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 2,
+        "hybrid": 1,
+        "hybrid+rerank": 2
+      }
+    },
+    {
+      "page": "Calvin cycle - Wikipedia",
+      "question": "What is the optimal temperature for the Calvin cycle in wheat?",
+      "answerable": false,
+      "ranks": {}
+    },
+    {
+      "page": "Calvin cycle - Wikipedia",
+      "question": "How is the Krebs cycle regulated in animal mitochondria?",
+      "answerable": false,
+      "ranks": {}
+    },
+    {
+      "page": "Harappan architecture - Wikipedia",
+      "question": "What ratio were Harappan bricks made in?",
+      "answerable": true,
+      "ranks": {
+        "dense": null,
+        "sparse": 2,
+        "hybrid": null,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Harappan architecture - Wikipedia",
+      "question": "How many people are thought to have lived in Mohenjo-daro and Harappa?",
+      "answerable": true,
+      "ranks": {
+        "dense": 3,
+        "sparse": 2,
+        "hybrid": 2,
+        "hybrid+rerank": 2
+      }
+    },
+    {
+      "page": "Harappan architecture - Wikipedia",
+      "question": "What were the two sections a Harappan city was divided into?",
+      "answerable": true,
+      "ranks": {
+        "dense": 5,
+        "sparse": 1,
+        "hybrid": 3,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Harappan architecture - Wikipedia",
+      "question": "Why were dockyards such as Lothal built away from the main current?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Harappan architecture - Wikipedia",
+      "question": "What technique did the Harappans use to build stone arches?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Harappan architecture - Wikipedia",
+      "question": "What period does the mature Harappan phase span?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Harappan architecture - Wikipedia",
+      "question": "Which is the best known building in the Harappan Revival style?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 1
+      }
+    },
+    {
+      "page": "Harappan architecture - Wikipedia",
+      "question": "What feature did the drains have at regular intervals?",
+      "answerable": true,
+      "ranks": {
+        "dense": 1,
+        "sparse": 1,
+        "hybrid": 1,
+        "hybrid+rerank": 2
+      }
+    },
+    {
+      "page": "Harappan architecture - Wikipedia",
+      "question": "Has the Indus script been deciphered?",
+      "answerable": false,
+      "ranks": {}
+    },
+    {
+      "page": "Harappan architecture - Wikipedia",
+      "question": "Which crops did the Harappans grow on their farms?",
+      "answerable": false,
+      "ranks": {}
+    }
+  ]
+}
