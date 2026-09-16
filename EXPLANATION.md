@@ -67,7 +67,7 @@ BM25   top-12 ─┘
 
 Returned chunks carry `vector_score`, `bm25_score`, `rerank_score` and their ingestion metadata; `timings` has `retrieval` and `rerank` separately for the trace.
 
-### 1b.4 TTL
+### 1b.4 Missing pages
 `_get_page` raises `KeyError` if the page was never indexed. `main.py` turns that into a 404; the extension reacts by re-indexing and retrying once.
 
 ---
@@ -122,7 +122,7 @@ Caps the total block text at 200k characters, calls `rag.index_page(...)`, retur
 
 ### 3.6 `/ask`
 1. Create a `Trace` (see Part 3b).
-2. Retrieval + rerank run **before** streaming so a missing/expired page can still be a proper 404.
+2. Retrieval + rerank run **before** streaming so a page that was never indexed can still be a proper 404.
 3. `event_stream()` yields NDJSON: a `sources` line (with `trace_id`, chunks, timings, mode), `token` lines, then `done` with the `trace_id` again. The first token's arrival time is recorded as `first_token`.
 4. Any exception is caught and sent as an `error` line, if it propagated, uvicorn would cut the connection and Chrome would show only "network error".
 5. `trace.finish(answer)` records totals and writes the trace.
@@ -208,7 +208,7 @@ It clones the body, strips noise (`nav`, `footer`, `script`, `[aria-hidden]`, �
 `settings` (`backendUrl`) loads from `chrome.storage.local` on start and is edited via the ⚙ panel. `apiPost` turns FastAPI's `{detail}` errors into `Error` objects that also carry `.status`, so callers can react to 404 by re-indexing.
 
 ### 8.4 `prepareTab` / `ensureFresh`
-`prepareTab` = extract → `/index` → store the content hash → "Ready · N chunks · M sections". `ensureFresh` runs before every question: re-extract, re-hash, and if the hash differs, `/index` again (the backend answers `refreshed: true`). If `/ask` still returns 404 (index expired or backend restarted), `handleAsk` re-indexes once and retries.
+`prepareTab` = extract → `/index` → store the content hash → "Ready · N chunks · M sections". `ensureFresh` runs before every question: re-extract, re-hash, and if the hash differs, `/index` again (the backend answers `refreshed: true`). If `/ask` still returns 404 (the backend restarted and lost its in-memory index), `handleAsk` re-indexes once and retries.
 
 ### 8.5 `askQuestion`: reading the stream
 `reader.read()` gives raw bytes in arbitrary sizes; we decode, split on `\n`, keep the incomplete tail in `leftover`, and parse each full line. `sources` fills the collapsible card (section label, rerank score, snippet) and remembers `trace_id`; `token` appends text; `done` confirms the trace id. When the stream ends, `renderCitations` runs.

@@ -15,7 +15,7 @@ The project has two halves:
 | Half | What it is | Language |
 |------|------------|----------|
 | `extension/` | Chrome side-panel UI. Extracts the page as structured blocks, sends it to the backend, renders streamed answers with clickable citations. | JavaScript |
-| `backend/` | FastAPI server. Ingestion, hybrid search (FAISS + BM25), cross-encoder reranking, cited generation, tracing/metrics, API-key access control. | Python |
+| `backend/` | FastAPI server. Ingestion, hybrid search (FAISS + BM25), cross-encoder reranking, cited generation, tracing and metrics. | Python |
 
 ---
 
@@ -42,7 +42,7 @@ The project has two halves:
 | Embeddings | `sentence-transformers` with `BAAI/bge-small-en-v1.5` | Small (33M params), fast on CPU, strong retrieval quality |
 | Vector search | FAISS (`IndexFlatIP`) | Exact nearest-neighbour search; a page has only a few hundred chunks so no approximation needed |
 | Keyword search | `rank-bm25` (BM25Okapi) | Catches exact tokens (error codes, flags, names) that embeddings blur |
-| Reranker | `cross-encoder/ms-marco-MiniLM-L-6-v2` | Reads question + chunk together; far sharper relevance than either retriever; ~60 ms for 20 candidates on CPU |
+| Reranker | `cross-encoder/ms-marco-MiniLM-L-6-v2` | Reads question + chunk together; far sharper relevance than either retriever; ~137 ms for ~24 candidates on CPU |
 | LLM | LLaMA 3.2 3B via Ollama **or** gpt-oss-20b via Groq | Ollama: fully offline, no key. Groq: free tier, ~1000 tok/s |
 | Packaging | Docker + docker-compose | Reproducible build, one command to run, restarts on crash |
 | Streaming | NDJSON over HTTP `StreamingResponse` | Simplest way to stream without WebSockets |
@@ -60,18 +60,20 @@ askpage/
 ├── docker-compose.yml      # one-command build & run
 ├── .gitignore
 ├── backend/
-│   ├── main.py             # FastAPI routes, API-key auth, rate limiting, tracing
+│   ├── main.py             # FastAPI routes, rate limiting, tracing
 │   ├── ingest.py           # clean → sections → sentence-aware chunks → dedupe
-│   ├── rag.py              # FAISS + BM25 hybrid search, RRF, cross-encoder rerank, TTL
+│   ├── rag.py              # FAISS + BM25 hybrid search, RRF, cross-encoder rerank
 │   ├── llm.py              # cited prompt + Groq/Ollama streaming
 │   ├── observability.py    # per-request traces, /metrics
 │   ├── Dockerfile          # container image (models baked in)
-│   ├── .env.example        # config template (provider, keys, tuning)
+│   ├── .env.example        # config template (provider, key, tuning)
 │   ├── requirements.txt
 │   ├── data/               # traces.jsonl (git-ignored, docker volume)
 │   └── eval/
-│       ├── test_set.json   # sample pages + questions + evidence strings
-│       └── evaluate.py     # retrieval metrics per mode + judged accuracy
+│       ├── test_set.json   # 40 questions over 4 real pages + evidence strings
+│       ├── evaluate.py     # retrieval metrics + judged answer accuracy (needs an LLM)
+│       ├── evaluate_retrieval.py  # retrieval metrics only, no LLM needed
+│       └── results_retrieval.json # measured output
 └── extension/
     ├── manifest.json       # extension config and permissions
     ├── background.js       # opens the side panel on icon click
@@ -180,8 +182,11 @@ Then open any article in Chrome and click the AskPage icon.
 **Run the evaluation**
 ```bash
 cd backend
-python eval/evaluate.py
+python eval/evaluate_retrieval.py   # hit@k, MRR and latency per funnel stage; no LLM needed
+python eval/evaluate.py             # adds answer accuracy and citation rate; needs Ollama or Groq
 ```
+
+Results are written to `eval/results_retrieval.json` and `eval/results.json`. Measured numbers are in [RESULTS.md](RESULTS.md).
 
 ---
 
@@ -224,7 +229,7 @@ curl -N -X POST http://localhost:8000/ask \
 
 **Traces & metrics**: Each `/ask` becomes a trace (timings per stage, chunk ids, top rerank score, whether the model declined). `/metrics` aggregates p50/p95 latency per stage, grounded rate and error count over the last 500 requests. Every trace is also appended to `data/traces.jsonl` on a Docker volume and logged as one JSON line.
 
-**Freshness**: The index is keyed by URL but stamped with a content hash. `/index` is idempotent: same hash → cached, different hash → re-indexed. Before every question the extension re-hashes the page and re-indexes if it changed; Staleness is event-driven: there is no expiry timer to tune.
+**Freshness**: The index is keyed by URL but stamped with a content hash. `/index` is idempotent: same hash → cached, different hash → re-indexed. Before every question the extension re-hashes the page and re-indexes if it changed. Staleness is event-driven, so there is no expiry timer to tune.
 
 **Embeddings**: A model turns text into a vector (here 384 numbers). Texts with similar meaning get vectors that point in similar directions. We normalise vectors to unit length so the inner product equals cosine similarity.
 
