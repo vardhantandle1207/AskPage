@@ -1,3 +1,4 @@
+
 # AskPage: Context-Aware Browser Assistant
 
 A Chrome extension that lets you ask questions about the web page you are reading. It runs a small Retrieval-Augmented Generation (RAG) pipeline: the page is split into chunks, embedded, searched with FAISS, and the best chunks are handed to a LLaMA model that streams the answer back into a side panel.
@@ -5,7 +6,8 @@ A Chrome extension that lets you ask questions about the web page you are readin
 Runs entirely on your machine: the backend in Docker (or plain uvicorn), the LLM via Ollama. Free, offline, no keys. Groq's hosted API can be swapped in with one env var if you want faster answers.
 
 ---
-<img width="1468" height="877" alt="Screenshot 2026-09-21 at 3 46 47 AM" src="https://github.com/user-attachments/assets/6457e744-f4f7-4932-ae35-923c6c9d8c03" />
+
+<img width="1470" height="881" alt="Screenshot 2026-09-21 at 3 50 44 AM" src="https://github.com/user-attachments/assets/78275b38-e35c-439e-ab72-34a4ecb8684e" />
 
 
 ## 1. Project overview
