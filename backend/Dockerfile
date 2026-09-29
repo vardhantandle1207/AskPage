@@ -3,13 +3,13 @@
 # Build:  docker build -t askpage-backend .
 # Run:    docker run -p 8000:8000 --env-file .env askpage-backend
 
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
 # Install the CPU-only build of PyTorch first. The default build pulls in
 # ~2 GB of CUDA libraries we don't need on a CPU server.
-RUN pip install --no-cache-dir torch==2.4.1 --index-url https://download.pytorch.org/whl/cpu
+RUN pip install --no-cache-dir torch==2.8.0 --index-url https://download.pytorch.org/whl/cpu
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
