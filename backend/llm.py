@@ -51,12 +51,14 @@ groq_client = groq.Groq() if LLM_PROVIDER == "groq" else None
 # from the given context. This is our simple guard against hallucination.
 # The second: cite sources with [n] so the UI can link each claim back to
 # the exact passage (and section) on the page it came from.
+NOT_FOUND_ANSWER = "I couldn't find that on this page."
+
 SYSTEM_PROMPT = (
     "You are AskPage, an assistant that answers questions about a web page.\n"
     "Rules:\n"
     "1. Answer ONLY using the SOURCES below.\n"
     "2. If the answer is not in the sources, reply exactly: "
-    "\"I couldn't find that on this page.\"\n"
+    f"\"{NOT_FOUND_ANSWER}\"\n"
     "3. After each sentence or claim, cite the source(s) it came from using "
     "square brackets, e.g. [1] or [2][3]. Only cite numbers that exist.\n"
     "4. Be thorough. Give the direct answer first, then explain it using the "
@@ -172,11 +174,18 @@ def stream_answer(question: str, chunks: list[dict], page_title: str):
     Generator: yields the answer one small piece at a time.
     main.py forwards each piece to the browser so the user sees
     text appear immediately instead of waiting for the whole answer.
+
+    No chunks means retrieval found nothing relevant (see rag.ABSTAIN_SCORE),
+    so we decline directly: a model handed only weak passages tends to answer
+    from them anyway.
     """
+    if not chunks:
+        yield NOT_FOUND_ANSWER
+        return
     messages = build_messages(question, chunks, page_title)
     yield from stream_chat(messages)
 
 
 def generate_answer(question: str, chunks: list[dict], page_title: str) -> str:
     """Non-streaming version. Used by the evaluation script."""
-    return complete_chat(build_messages(question, chunks, page_title))
+    return "".join(stream_answer(question, chunks, page_title))

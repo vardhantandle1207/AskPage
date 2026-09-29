@@ -62,7 +62,7 @@ vector top-12 ─┐
 BM25   top-12 ─┘
 ```
 - **RRF** (`_reciprocal_rank_fusion`): each list gives item `1/(60 + rank)`. Ranks, not raw scores, so a cosine of 0.7 and a BM25 of 4.2 combine without any normalisation.
-- **Rerank**: `reranker.predict([(question, chunk_text), …])` returns one logit per pair. Positive ≈ relevant, below −5 ≈ irrelevant. We sort by it, drop anything under `RERANK_MIN_SCORE` (−6) while always keeping at least 2, and cut to `TOP_K`.
+- **Rerank**: `reranker.predict([(question, chunk_text), …])` returns one logit per pair. Positive ≈ relevant, below −5 ≈ irrelevant. We sort by it, drop anything under `RERANK_MIN_SCORE` (−6) while always keeping at least 2, and cut to `TOP_K`. If even the best chunk is under `ABSTAIN_SCORE` (−7.5), we return no chunks and `llm.py` replies "I couldn't find that on this page." without calling the model.
 - `mode="vector"|"bm25"|"hybrid"` exists so `evaluate.py` can measure each stage on its own.
 
 Returned chunks carry `vector_score`, `bm25_score`, `rerank_score` and their ingestion metadata; `timings` has `retrieval` and `rerank` separately for the trace.

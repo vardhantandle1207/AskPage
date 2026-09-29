@@ -53,6 +53,11 @@ RERANK_ENABLED = os.getenv("RERANK_ENABLED", "1") != "0"
 # Chunks below this are dropped as noise (we always keep at least MIN_KEEP).
 RERANK_MIN_SCORE = float(os.getenv("RERANK_MIN_SCORE", "-6"))
 MIN_KEEP = 2
+# If even the best chunk scores below this, the page doesn't answer the
+# question: return no chunks, and llm.py declines without calling the model.
+# Lower than RERANK_MIN_SCORE on purpose: the weakest answerable question in
+# the eval set scored -7.30, the weakest unanswerable one -7.82 (RESULTS.md).
+ABSTAIN_SCORE = float(os.getenv("ABSTAIN_SCORE", "-7.5"))
 RRF_K = 60                      # standard constant for reciprocal rank fusion
 
 MAX_STORED_PAGES = int(os.getenv("MAX_STORED_PAGES", "200"))
@@ -242,8 +247,11 @@ def retrieve_chunks(url: str, question: str, top_k: int = TOP_K,
         pairs = [(question, search_text(chunks[p])) for p in candidates]
         rerank_scores = reranker.predict(pairs).tolist()
         ranked = sorted(zip(candidates, rerank_scores), key=lambda x: x[1], reverse=True)
-        kept = [(p, s) for i, (p, s) in enumerate(ranked)
-                if s >= RERANK_MIN_SCORE or i < MIN_KEEP][:top_k]
+        if ranked[0][1] < ABSTAIN_SCORE:
+            kept = []
+        else:
+            kept = [(p, s) for i, (p, s) in enumerate(ranked)
+                    if s >= RERANK_MIN_SCORE or i < MIN_KEEP][:top_k]
     else:
         kept = [(p, None) for p in candidates[:top_k]]
     timings["rerank"] = round(time.time() - t1, 4)
