@@ -177,7 +177,7 @@ The first server start downloads the embedding model (~130 MB) automatically.
 1. Make sure Ollama is running (`ollama serve`, or the Ollama desktop app).
 2. Start the backend:
    - Docker: `docker compose up -d` (add `--build` after code changes)
-   - Plain Python: `cd backend && source venv/bin/activate && export $(cat .env | xargs) && uvicorn main:app --reload --port 8000`
+   - Plain Python: `cd backend && source venv/bin/activate && uvicorn main:app --reload --port 8000 --env-file .env`
 
 Check it: open http://localhost:8000/health → `{"status":"ok","provider":"ollama","model":"llama3.2",...}`
 
