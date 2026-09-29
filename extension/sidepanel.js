@@ -227,6 +227,7 @@ async function askQuestion(question, session) {
   const answerElement = addMessage("", "assistant");
   answerElement.classList.add("streaming");
   let answerText = "";
+  let failed = false;
 
   // The backend sends one JSON object per line (NDJSON).
   const reader = response.body.getReader();
@@ -256,13 +257,16 @@ async function askQuestion(question, session) {
         session.sources = message.chunks;
         showSources(message.chunks, message.timings, message.mode);
       } else if (message.type === "error") {
+        failed = true;
         answerElement.classList.add("error");
         answerElement.textContent = message.message;
       }
     }
   }
   answerElement.classList.remove("streaming");
-  renderCitations(answerElement, answerText, session.sources);
+  // Rendering citations rewrites the bubble from answerText, which would
+  // wipe out the error message the backend just sent.
+  if (!failed) renderCitations(answerElement, answerText, session.sources);
 }
 
 // ---------------------------------------------------------------------------
@@ -291,6 +295,11 @@ function renderCitations(element, text, sources) {
 }
 
 // Runs inside the web page: find `snippet`, scroll to it, highlight it.
+//
+// A chunk is stitched together from separate blocks (a caption and the
+// paragraph after it, list items, lines of code), so its spacing rarely
+// matches the page. We compare with all whitespace removed and Unicode
+// normalised, then map the match back to the page's text nodes.
 function highlightSnippetInPage(snippet) {
   const style = document.getElementById("askpage-highlight-style") || document.createElement("style");
   style.id = "askpage-highlight-style";
@@ -298,22 +307,40 @@ function highlightSnippetInPage(snippet) {
   document.head.appendChild(style);
   if (CSS.highlights) CSS.highlights.delete("askpage");
 
-  // Search in progressively shorter prefixes: layout can split a chunk
-  // across elements, but its first sentence is usually contiguous.
-  const words = snippet.split(/\s+/);
-  for (const length of [40, 25, 15, 8]) {
-    const needle = words.slice(0, length).join(" ");
-    window.getSelection().removeAllRanges();
-    if (window.find(needle, false, false, true, false, false, false)) {
-      const selection = window.getSelection();
-      if (selection.rangeCount) {
-        const range = selection.getRangeAt(0).cloneRange();
-        selection.removeAllRanges();
-        if (CSS.highlights) CSS.highlights.set("askpage", new Highlight(range));
-        range.startContainer.parentElement.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-      return true;
+  // NFKD on both sides: ingest.py applied NFKC, and NFKD(NFKC(x)) == NFKD(x).
+  const squash = (text) => text.normalize("NFKD").replace(/[\s​﻿]+/g, "");
+
+  // Page text without whitespace, and where each of its characters came from.
+  let pageText = "";
+  const origin = [];   // origin[i] = [textNode, offset] of pageText[i]
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode: (node) => node.parentElement?.closest("script, style, noscript")
+      ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT,
+  });
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    const value = node.nodeValue;
+    for (let offset = 0; offset < value.length; offset++) {
+      const squashed = squash(value[offset]);
+      for (let k = 0; k < squashed.length; k++) origin.push([node, offset]);
+      pageText += squashed;
     }
+  }
+
+  // Longest prefix of the chunk found on the page. The whole chunk may not
+  // match if ingestion dropped a boilerplate line from the middle of it.
+  const needle = squash(snippet);
+  const lengths = [needle.length, 600, 300, 150, 60, 25].filter((n) => n <= needle.length);
+  for (const length of lengths) {
+    const start = pageText.indexOf(needle.slice(0, length));
+    if (start === -1) continue;
+    const [startNode, startOffset] = origin[start];
+    const [endNode, endOffset] = origin[start + length - 1];
+    const range = document.createRange();
+    range.setStart(startNode, startOffset);
+    range.setEnd(endNode, endOffset + 1);
+    if (CSS.highlights) CSS.highlights.set("askpage", new Highlight(range));
+    startNode.parentElement.scrollIntoView({ behavior: "smooth", block: "center" });
+    return true;
   }
   return false;
 }
