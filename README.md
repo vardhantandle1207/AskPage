@@ -7,7 +7,8 @@ Runs entirely on your machine: the backend in Docker (or plain uvicorn), the LLM
 
 ---
 
-<img width="1470" height="881" alt="Screenshot 2026-09-21 at 3 50 44 AM" src="https://github.com/user-attachments/assets/78275b38-e35c-439e-ab72-34a4ecb8684e" />
+![655458982-78275b38-e35c-439e-ab72-34a4ecb8684e](https://github.com/user-attachments/assets/a0b2c35f-4920-4230-9183-aa7e826dfc84)
+
 
 
 ## 1. Project overview
